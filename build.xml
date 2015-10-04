@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Proyecto2" default="Proyecto2.jar" basedir="." >
+
+  <property name="build.dir" value="build" />
+  <property name="src.dir"   value="src" />
+  <property name="lib.dir"   value="lib" />
+  <property name="doc.dir"   value="doc" />
+
+  <target name="Proyecto2.jar" depends="compile.Proyecto2">
+    <jar jarfile="Proyecto2.jar">
+      <zipfileset dir="${build.dir}" prefix="" />
+      <manifest>
+        <attribute name="Main-Class" value="MyP2.Proyecto2"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile.Proyecto2">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${build.dir}"
+           debug="true"
+           debuglevel="lines,vars,source"
+           includeantruntime="false"
+           deprecation="true"
+           nowarn="off">
+      <classpath>
+        <fileset dir="${lib.dir}">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <copy todir="build/proyecto1/Proyecto2">
+      <fileset dir="src/proyecto1/Proyecto2" includes="**/*.fxml"/>
+    </copy>
+  </target>
+
+  <target name="doc" depends="Proyecto2.jar">
+    <mkdir dir="${doc.dir}"/>
+    <javadoc packagenames="MyP2.*"
+             sourcepath="src"
+             defaultexcludes="yes"
+             destdir="${doc.dir}"
+             charset="UTF-8"
+             author="true"
+             version="false"
+             use="true"
+             windowtitle="Modelado y Programación">
+      <doctitle><![CDATA[<h1>Proyecto2 Base de Musica</h1>]]></doctitle>
+      <link href="http://docs.oracle.com/javase/8/docs/api/" />
+      <classpath>
+        <pathelement location="${lib.dir}/junit.jar" />
+        <pathelement location="${lib.dir}/hamcrest-core.jar" />
+        <pathelement location="${lib.dir}/sqlite-jdbc-3.8.11.1.jar" />
+      </classpath>
+    </javadoc>
+  </target>
+
+  <target name="clean">
+    <delete file="Proyecto2.jar"/>
+    <delete dir="${build.dir}"/>
+    <delete dir="${doc.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="test" depends="Proyecto2.jar">
+    <junit printsummary="yes" haltonfailure="no">
+      <formatter type="plain" usefile="false" />
+      <classpath>
+        <pathelement path="${build.dir}" />
+        <pathelement location="${lib.dir}/junit.jar" />
+        <pathelement location="${lib.dir}/hamcrest-core.jar" />
+      </classpath>
+      <batchtest fork="yes">
+        <fileset dir="${src.dir}">
+          <include name="**/*Test*.java" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="run" depends="compile.Proyecto2,Proyecto2.jar" description="Corre el programa.">
+    <java jar="Proyecto2.jar" fork="true" />
+  </target>
+</project>
