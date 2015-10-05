@@ -31,8 +31,8 @@
       </classpath>
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
-    <copy todir="build/proyecto1/Proyecto2">
-      <fileset dir="src/proyecto1/Proyecto2" includes="**/*.fxml"/>
+    <copy todir="build/MyP2">
+      <fileset dir="src/MyP2" includes="**/*.fxml"/>
     </copy>
   </target>
 

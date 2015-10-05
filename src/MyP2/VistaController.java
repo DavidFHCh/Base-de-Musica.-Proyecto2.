@@ -1,5 +1,6 @@
 package MyP2;
 
+import org.sqlite.*;
 import java.sql.*;
 import java.util.*;
 import java.net.URL;
@@ -26,7 +27,7 @@ public class VistaController implements Initializable {
     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+    	
     }    
     
 }
