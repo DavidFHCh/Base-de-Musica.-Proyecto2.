@@ -31,21 +31,25 @@ public class TestManejador{
      * Prueba unitaria para {@link Manejador#esNula}.
      */
 	@Test public void testBusca(){
+		LinkedList<ResultSet> l = new LinkedList<ResultSet>();
 		ResultSet rs = null;
 		try{
-			rs = m.buscar(1990,1900,1900,null,null,null,null,c);
+			l = m.buscar(1990,1900,1900,null,null,null,null,c);
 			Assert.fail();
 		}catch(ExcepcionBusquedaInvalida ebi){}
 		try{
-			rs = m.buscar(2015,-1,-1,"TODO","TODO","TODO","TODO",c);
+			l = m.buscar(2015,-1,-1,"TODO","TODO","TODO","TODO",c);
+			rs = l.removeFirst();
 			while(rs.next()){
 				Assert.assertTrue(rs.getInt("año") == 2015);
 			}
-			rs = m.buscar(-1,2014,2015,"TODO","TODO","TODO","TODO",c);
+			l = m.buscar(-1,2014,2015,"TODO","TODO","TODO","TODO",c);
+			rs = l.removeFirst();
 			while(rs.next()){
 				Assert.assertTrue(rs.getInt("año") == 2015 || rs.getInt("año") == 2014);
 			}
-			rs = m.buscar(-1,-1,-1,"M0","TODO","TODO","TODO",c);
+			l = m.buscar(-1,-1,-1,"M0","TODO","TODO","TODO",c);
+			rs = l.removeFirst();
 			while(rs.next()){
 				Assert.assertTrue(rs.getString("cancion") == "Lean On");
 			}

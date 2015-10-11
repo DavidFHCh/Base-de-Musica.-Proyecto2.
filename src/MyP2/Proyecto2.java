@@ -19,7 +19,7 @@ public class Proyecto2 extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Vista.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("BDView.fxml"));
         
         Scene scene = new Scene(root);
         
