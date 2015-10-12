@@ -12,7 +12,7 @@ public class Artistas{
 	private String artist;
 	private int idArtist;
 
-	public Artista(int idArtist, String artist){
+	public Artistas(int idArtist, String artist){
 		this.idArtist = idArtist;
 		this.artist = artist;
 	}
@@ -22,15 +22,15 @@ public class Artistas{
 	}
 
 	public String delete(){
-		return "DELETE FROM " + tabla + " WHERE " + artista + " = '" + artist + "';"  
+		return "DELETE FROM " + tabla + " WHERE " + artista + " = '" + artist + "';";  
 	}
 
 	public String insert(){
-		return "INSERT INTO " + tabla "("+ id + "," + artista + ") " +  " VALUES " + "('" + idArtist + "','" + artist + "');"; 
+		return "INSERT INTO " + tabla + "(" + id + "," + artista + ") " +  " VALUES " + "('" + idArtist + "','" + artist + "');"; 
 	}
 
 	public String select(){
-		return "SELECT " + artista + " FROM " tabla + " WHERE " + id " = " + idArtist + ";";
+		return "SELECT " + artista + " FROM " + tabla + " WHERE " + id + " = " + idArtist + ";";
 	}
 
 	public String selectTodo(){
@@ -38,29 +38,35 @@ public class Artistas{
 	}
 
 	public String selectLike(){
-		return "SELECT " + artista + " FROM " + tabla + " WHERE lower(" + artista + ") LIKE '%" + artist.toLowerCase() "%';";
+		return "SELECT " + artista + " FROM " + tabla + " WHERE lower(" + artista + ") LIKE '%" + artist.toLowerCase() + "%';";
 	}
 
 	public void realizaOperacion(String operacion){
 		String comando = "";
+		Statement stmt = null;
 		Connection conexion = Manejador.abrirConexion();
-		Statement stmt = conexion.createStatement();
-		switch(operacion){
-			case "update":
-				comando = update();
-				stmt.executeUpdate(comando);
-				break;
-			case "delete":
-				comando = delete();
-				stmt.executeUpdate(comando);
-				break;
-			case "insert":
-				comando = insert();
-				stmt.executeUpdate(comando);
-				break;
-			default:
-				Manejador.cerrarConexion();
-				throw new ErrorBaseDeDatos("No conozco esa operacion.");
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "update":
+					comando = update();
+					stmt.executeUpdate(comando);
+					break;
+				case "delete":
+					comando = delete();
+					stmt.executeUpdate(comando);
+					break;
+				case "insert":
+					comando = insert();
+					stmt.executeUpdate(comando);
+					break;
+				default:
+					Manejador.cerrarConexion();
+					throw new ErrorBaseDeDatos("No conozco esa operacion.");
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
 	}
@@ -68,24 +74,30 @@ public class Artistas{
 	public ResultSet realizaBusqueda(String operacion){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
-		Statement stmt = conexion.createStatement();
+		Statement stmt = null;
 		ResultSet rs = null;
-		switch(operacion){
-			case "select":
-			comando = select();
-				rs = stmt.executeUpdate(comando);
-				break;
-			case "selectTodo":
-				comando = selectTodo();
-				rs = stmt.executeUpdate(comando);
-				break;
-			case "selectLike":
-				comando = selectLike();
-				rs = stmt.executeUpdate();
-				break;
-			default:
-				Manejador.cerrarConexion();
-				throw new ErrorBaseDeDatos("No conozco esa operacion.");
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "select":
+				comando = select();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectTodo":
+					comando = selectTodo();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectLike":
+					comando = selectLike();
+					rs = stmt.executeQuery(comando);
+					break;
+				default:
+					Manejador.cerrarConexion();
+					throw new ErrorBaseDeDatos("No conozco esa operacion.");
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
 		return rs;

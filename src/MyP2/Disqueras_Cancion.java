@@ -26,57 +26,63 @@ public class Disqueras_Cancion{
 	}
 
 	public String deleteDisquera(){
-		return "DELETE FROM " + tabla + " WHERE " + idDisquera + " = '" + idLabel + "';"  
+		return "DELETE FROM " + tabla + " WHERE " + idDisquera + " = '" + idLabel + "';"; 
 	}
 
 	public String deleteCancion(){
-		return "DELETE FROM " + tabla + " WHERE " + idCancion + " = '" + idSong + "';"  
+		return "DELETE FROM " + tabla + " WHERE " + idCancion + " = '" + idSong + "';";  
 	}
 
 	public String insert(){
-		return "INSERT INTO " + tabla "(" + idDisquera + "," + idCancion + ") " +  " VALUES " + "('" + idLabel + "','" + idSong + "');"; 
+		return "INSERT INTO " + tabla + "(" + idDisquera + "," + idCancion + ") " +  " VALUES " + "('" + idLabel + "','" + idSong + "');"; 
 	}
 
 	public String selectDisquera(){
-		return "SELECT " + idDisquera + " FROM " tabla + " WHERE " + idCancion " = " + idSong + ";";
+		return "SELECT " + idDisquera + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
 	public String selectCancion(){
-		return "SELECT " + idCancion + " FROM " tabla + " WHERE " + idDisquera " = " + idLabel + ";";
+		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idDisquera + " = " + idLabel + ";";
 	}
 
 	public String selectTodo(){
-		return "SELECT * FROM " tabla ";";
+		return "SELECT * FROM " + tabla + ";";
 	}
 
 	public void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion();
-		Statement stmt = conexion.createStatement();
-		switch(operacion){
-			case "updateDisquera":
-				comando = updateDisquera();
-				stmt.executeUpdate(comando);
-				break;
-			case "updateCancion":
-				comando = updateCancion();
-				stmt.executeUpdate(comando);
-				break;
-			case "deleteDisquera":
-				comando = deleteDisquera();
-				stmt.executeUpdate(comando);
-				break;
-			case "deleteCancion":
-				comando = deleteCancion();
-				stmt.executeUpdate(comando);
-				break;
-			case "insert":
-				comando = insert();
-				stmt.executeUpdate(comando);
-				break;
-			default:
-				Manejador.cerrarConexion();
-				throw new ErrorBaseDeDatos("No conozco esa operacion.");
+		Statement stmt = null;
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "updateDisquera":
+					comando = updateDisquera();
+					stmt.executeUpdate(comando);
+					break;
+				case "updateCancion":
+					comando = updateCancion();
+					stmt.executeUpdate(comando);
+					break;
+				case "deleteDisquera":
+					comando = deleteDisquera();
+					stmt.executeUpdate(comando);
+					break;
+				case "deleteCancion":
+					comando = deleteCancion();
+					stmt.executeUpdate(comando);
+					break;
+				case "insert":
+					comando = insert();
+					stmt.executeUpdate(comando);
+					break;
+				default:
+					Manejador.cerrarConexion();
+					throw new ErrorBaseDeDatos("No conozco esa operacion.");
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
 	}
@@ -84,25 +90,32 @@ public class Disqueras_Cancion{
 	public ResultSet realizaBusqueda(String operacion){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
-		Statement stmt = conexion.createStatement();
+		Statement stmt = null;
 		ResultSet rs = null;
-		switch(operacion){
-			case "selectDisquera":
-				comando = selectDisquera();
-				rs = stmt.executeUpdate(comando);
-				break;
-			case "selectCancion":
-				comando = selectCancion();
-				rs = stmt.executeUpdate(comando);
-				break;
-			case "selectTodo":
-				comando = selectTodo();
-				rs = stmt,executeUpdate(comando);
-				break;
-			default:
-				Manejador.cerrarConexion();
-				throw new ErrorBaseDeDatos("No conozco esa operacion.");
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "selectDisquera":
+					comando = selectDisquera();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectCancion":
+					comando = selectCancion();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectTodo":
+					comando = selectTodo();
+					rs = stmt.executeQuery(comando);
+					break;
+				default:
+					Manejador.cerrarConexion();
+					throw new ErrorBaseDeDatos("No conozco esa operacion.");
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
 		}
+		Manejador.cerrarConexion();
 		return rs;
 	}
 	

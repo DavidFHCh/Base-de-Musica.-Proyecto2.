@@ -20,6 +20,7 @@ public class Manejador{
 		}catch(Exception e){
 			throw new ErrorBaseDeDatos("No se pudo establecer una conexion.");
 		}
+		return conexion;
 	}
 
 	public synchronized static void cerrarConexion(){
@@ -28,7 +29,7 @@ public class Manejador{
 				return;
 			conexion.close();
 		}catch(Exception e){
-			throw new ErrorBaseDeDatos("No se pudo cerrar la conexion con la Base de Datos.")
+			throw new ErrorBaseDeDatos("No se pudo cerrar la conexion con la Base de Datos.");
 		}
 	}
 

@@ -18,49 +18,55 @@ public class Generos{
 	}
 
 	public String update(){
-		return "UPDATE " + tabla + " SET " + genero + "='" + genre + "' WHERE " + id + " = " + idGenre + ";";
+		return "UPDATE " + tabla + " SET " + genero + " =' " + genre + "' WHERE " + id + " = " + idGenre + ";";
 	}
 
 	public String delete(){
-		return "DELETE FROM " + tabla + " WHERE " + genero + " = '" + genre + "';"  
+		return "DELETE FROM " + tabla + " WHERE " + genero + " = '" + genre + "';";  
 	}
 
 	public String insert(){
-		return "INSERT INTO " + tabla "("+ id + "," + genero + ") " +  " VALUES " + "('" + idGenre + "','" + genre + "');";
+		return "INSERT INTO " + tabla + "(" + id + "," + genero + ") " +  " VALUES " + "('" + idGenre + "','" + genre + "');";
 	}
 
 	public String select(){
-		return "SELECT " + genero + " FROM " tabla + " WHERE " + id " = " + idGenre + ";";
+		return "SELECT " + genero + " FROM " + tabla + " WHERE " + id + " = " + idGenre + ";";
 	}
 
 	public String selectTodo(){
-		return "SELECT * FROM " + tabla +";";
+		return "SELECT * FROM " + tabla + ";";
 	}
 
 	public String selectLike(){
-		return "SELECT " + genero + " FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() "%';";
+		return "SELECT " + genero + " FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
 	}
 
 	public void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion();
-		Statement stmt = conexion.createStatement();
-		switch(operacion){
-			case "update":
-				comando = update();
-				stmt.executeUpdate(comando);
-				break;
-			case "delete":
-				comando = delete();
-				stmt.executeUpdate(comando);
-				break;
-			case "insert":
-				comando = insert();
-				stmt.executeUpdate(comando);
-				break;
-			default:
-				Manejador.cerrarConexion();
-				throw new ErrorBaseDeDatos("No conozco esa operacion.");
+		Statement stmt = null;
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "update":
+					comando = update();
+					stmt.executeUpdate(comando);
+					break;
+				case "delete":
+					comando = delete();
+					stmt.executeUpdate(comando);
+					break;
+				case "insert":
+					comando = insert();
+					stmt.executeUpdate(comando);
+					break;
+				default:
+					Manejador.cerrarConexion();
+					throw new ErrorBaseDeDatos("No conozco esa operacion.");
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
 	}
@@ -68,24 +74,30 @@ public class Generos{
 	public ResultSet realizaBusqueda(String operacion){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
-		Statement stmt = conexion.createStatement();
+		Statement stmt = null;
 		ResultSet rs = null;
-		switch(operacion){
-			case "select":
-			comando = select();
-				rs = stmt.executeUpdate(comando);
-				break;
-			case "selectTodo":
-				comando = selectTodo();
-				rs = stmt.executeUpdate(comando);
-				break;
-			case "selectLike":
-				comando = selectLike();
-				rs = stmt.executeUpdate();
-				break;
-			default:
-				Manejador.cerrarConexion();
-				throw new ErrorBaseDeDatos("No conozco esa operacion.");
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "select":
+					comando = select();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectTodo":
+					comando = selectTodo();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectLike":
+					comando = selectLike();
+					rs = stmt.executeQuery(comando);
+					break;
+				default:
+					Manejador.cerrarConexion();
+					throw new ErrorBaseDeDatos("No conozco esa operacion.");
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
 		return rs;
