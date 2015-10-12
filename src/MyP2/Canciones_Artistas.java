@@ -103,6 +103,7 @@ public class Canciones_Artistas{
 				Manejador.cerrarConexion();
 				throw new ErrorBaseDeDatos("No conozco esa operacion.");
 		}
+		return rs;
 	}
 	
 }
