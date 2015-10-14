@@ -17,6 +17,8 @@ public class Canciones_Artistas{
 		this.idSong = idSong;
 	}
 
+	public Canciones_Artistas(){}
+
 	public String updateArtista(){
 		return "UPDATE " + tabla + " SET " + idArtista + " ='" + idArtist + "' WHERE " + idSong + " = " + idCancion + ";";
 	}
@@ -37,11 +39,11 @@ public class Canciones_Artistas{
 		return "INSERT INTO " + tabla + "(" + idArtista + "," + idCancion + ")" +  " VALUES " + "('" + idArtist + "','" + idSong + "');"; 
 	}
 
-	public String selectArtista(){
+	public String selectArtista(int idSong){
 		return "SELECT " + idArtista + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
-	public String selectCancion(){
+	public String selectCancion(int idArtist){
 		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idArtista + " = " + idArtist + ";";
 	}
 
@@ -87,7 +89,7 @@ public class Canciones_Artistas{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion,int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -96,11 +98,11 @@ public class Canciones_Artistas{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "selectArtista":
-					comando = selectArtista();
+					comando = selectArtista(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectCancion":
-					comando = selectCancion();
+					comando = selectCancion(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":

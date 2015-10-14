@@ -17,6 +17,8 @@ public class Generos{
 		this.genre = genre;
 	}
 
+	public Generos(){}
+
 	public String update(){
 		return "UPDATE " + tabla + " SET " + genero + " =' " + genre + "' WHERE " + id + " = " + idGenre + ";";
 	}
@@ -29,7 +31,7 @@ public class Generos{
 		return "INSERT INTO " + tabla + "(" + id + "," + genero + ") " +  " VALUES " + "('" + idGenre + "','" + genre + "');";
 	}
 
-	public String select(){
+	public String select(int idGenre){
 		return "SELECT " + genero + " FROM " + tabla + " WHERE " + id + " = " + idGenre + ";";
 	}
 
@@ -37,7 +39,7 @@ public class Generos{
 		return "SELECT * FROM " + tabla + ";";
 	}
 
-	public String selectLike(){
+	public String selectLike(String genre){
 		return "SELECT " + genero + " FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
 	}
 
@@ -71,7 +73,7 @@ public class Generos{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -80,7 +82,7 @@ public class Generos{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "select":
-					comando = select();
+					comando = select(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":
@@ -88,7 +90,7 @@ public class Generos{
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectLike":
-					comando = selectLike();
+					comando = selectLike(param);
 					rs = stmt.executeQuery(comando);
 					break;
 				default:

@@ -17,6 +17,8 @@ public class Generos_Cancion{
 		this.idSong = idSong;
 	}
 
+	public Generos_Cancion(){}
+
 	public String updateGenero(){
 		return "UPDATE " + tabla + " SET " + idGenero + " ='" + idGenre + "' WHERE " + idSong + " = " + idCancion + ";";
 	}
@@ -37,11 +39,11 @@ public class Generos_Cancion{
 		return "INSERT INTO " + tabla + "(" + idGenero + "," + idCancion + ") " +  " VALUES " + "('" + idGenre + "','" + idSong + "');"; 
 	}
 
-	public String selectGenero(){
+	public String selectGenero(int idSong){
 		return "SELECT " + idGenero + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
-	public String selectCancion(){
+	public String selectCancion(int idGenre){
 		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idGenero + " = " + idGenre + ";";
 	}
 
@@ -87,7 +89,7 @@ public class Generos_Cancion{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion, int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -96,11 +98,11 @@ public class Generos_Cancion{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "selectGenero":
-					comando = selectGenero();
+					comando = selectGenero(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectCancion":
-					comando = selectCancion();
+					comando = selectCancion(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":

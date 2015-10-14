@@ -17,6 +17,8 @@ public class Artistas{
 		this.artist = artist;
 	}
 
+	public Artistas(){}
+
 	public String update(){
 		return "UPDATE " + tabla + " SET " + artista + "='" + artist + "' WHERE " + id + " = " + idArtist + ";";
 	}
@@ -29,7 +31,7 @@ public class Artistas{
 		return "INSERT INTO " + tabla + "(" + id + "," + artista + ") " +  " VALUES " + "('" + idArtist + "','" + artist + "');"; 
 	}
 
-	public String select(){
+	public String select(int idArtist){
 		return "SELECT " + artista + " FROM " + tabla + " WHERE " + id + " = " + idArtist + ";";
 	}
 
@@ -37,7 +39,7 @@ public class Artistas{
 		return "SELECT " + artista + " FROM " + tabla +";";
 	}
 
-	public String selectLike(){
+	public String selectLike(String artist){
 		return "SELECT " + artista + " FROM " + tabla + " WHERE lower(" + artista + ") LIKE '%" + artist.toLowerCase() + "%';";
 	}
 
@@ -71,7 +73,7 @@ public class Artistas{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion,int id, String param1){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -80,7 +82,7 @@ public class Artistas{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "select":
-				comando = select();
+				comando = select(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":
@@ -88,7 +90,7 @@ public class Artistas{
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectLike":
-					comando = selectLike();
+					comando = selectLike(param1);
 					rs = stmt.executeQuery(comando);
 					break;
 				default:

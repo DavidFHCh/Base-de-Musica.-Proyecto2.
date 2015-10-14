@@ -17,6 +17,8 @@ public class Disqueras{
 		this.label = label;
 	}
 
+	public Disqueras(){}
+
 	public String update(){
 		return "UPDATE " + tabla + " SET " + disquera + " = '" + label + "' WHERE " + id + " = " + idLabel + ";";
 	}
@@ -29,7 +31,7 @@ public class Disqueras{
 		return "INSERT INTO " + tabla + "(" + id + "," + disquera + ") " +  " VALUES " + "('" + idLabel + "','" + label + "');";
 	}
 
-	public String select(){
+	public String select(int idLabel){
 		return "SELECT " + disquera + " FROM " + tabla + " WHERE " + id + " = " + idLabel + ";";
 	}
 
@@ -37,7 +39,7 @@ public class Disqueras{
 		return "SELECT * FROM " + tabla + ";";
 	}
 
-	public String selectLike(){
+	public String selectLike(String label){
 		return "SELECT " + disquera + " FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
 	}
 
@@ -71,7 +73,7 @@ public class Disqueras{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -80,7 +82,7 @@ public class Disqueras{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "select":
-				comando = select();
+				comando = select(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":
@@ -88,7 +90,7 @@ public class Disqueras{
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectLike":
-					comando = selectLike();
+					comando = selectLike(param);
 					rs = stmt.executeQuery(comando);
 					break;
 				default:

@@ -17,6 +17,8 @@ public class Disqueras_Cancion{
 		this.idSong = idSong;
 	}
 
+	public Disqueras_Cancion(){}
+
 	public String updateDisquera(){
 		return "UPDATE " + tabla + " SET " + idDisquera + " ='" + idLabel + "' WHERE " + idSong + " = " + idCancion + ";";
 	}
@@ -37,11 +39,11 @@ public class Disqueras_Cancion{
 		return "INSERT INTO " + tabla + "(" + idDisquera + "," + idCancion + ") " +  " VALUES " + "('" + idLabel + "','" + idSong + "');"; 
 	}
 
-	public String selectDisquera(){
+	public String selectDisquera(int idSong){
 		return "SELECT " + idDisquera + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
-	public String selectCancion(){
+	public String selectCancion(int idLabel){
 		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idDisquera + " = " + idLabel + ";";
 	}
 
@@ -87,7 +89,7 @@ public class Disqueras_Cancion{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion, int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -96,11 +98,11 @@ public class Disqueras_Cancion{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "selectDisquera":
-					comando = selectDisquera();
+					comando = selectDisquera(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectCancion":
-					comando = selectCancion();
+					comando = selectCancion(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":

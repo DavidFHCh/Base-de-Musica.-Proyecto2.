@@ -17,6 +17,8 @@ public class Colaboraciones_Canciones{
 		this.idSong = idSong;
 	}
 
+	public Colaboraciones_Canciones(){}
+
 	public String updateColaboracion(){
 		return "UPDATE " + tabla + " SET " + idColaboracion + " ='" + idCollab + "' WHERE " + idSong + " = " + idCancion + ";";
 	}
@@ -37,11 +39,11 @@ public class Colaboraciones_Canciones{
 		return "INSERT INTO " + tabla + "(" + idColaboracion + "," + idCancion + ") " +  " VALUES " + "('" + idCollab + "','" + idSong + "');"; 
 	}
 
-	public String selectColaboracion(){
+	public String selectColaboracion(int idSong){
 		return "SELECT " + idColaboracion + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
-	public String selectCancion(){
+	public String selectCancion(int idCollab){
 		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idColaboracion + " = " + idCollab + ";";
 	}
 
@@ -87,7 +89,7 @@ public class Colaboraciones_Canciones{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion){
+	public ResultSet realizaBusqueda(String operacion,int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
@@ -96,11 +98,11 @@ public class Colaboraciones_Canciones{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "selectColaboracion":
-					comando = selectColaboracion();
+					comando = selectColaboracion(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectCancion":
-					comando = selectCancion();
+					comando = selectCancion(id);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodo":
