@@ -46,7 +46,7 @@ public class Artistas{
 	public void realizaOperacion(String operacion){
 		String comando = "";
 		Statement stmt = null;
-		Connection conexion = Manejador.abrirConexion();
+		Connection conexion = Manejador.abrirConexion(false);
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
@@ -75,7 +75,7 @@ public class Artistas{
 
 	public ResultSet realizaBusqueda(String operacion,int id, String param1){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion();
+		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{

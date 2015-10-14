@@ -45,7 +45,7 @@ public class Disqueras{
 
 	public void realizaOperacion(String operacion){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion();
+		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		try{
 			stmt = conexion.createStatement();
@@ -75,7 +75,7 @@ public class Disqueras{
 
 	public ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion();
+		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{

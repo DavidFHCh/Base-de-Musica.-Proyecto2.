@@ -11,11 +11,14 @@ public class Manejador{
 
 	private static Connection conexion;
 
-	public synchronized static Connection abrirConexion(){
+	public synchronized static Connection abrirConexion(boolean test){
 		try{
 			if(conexion == null || conexion.isClosed()){
 				Class.forName("org.sqlite.JDBC");
-                conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica.db");
+				if(test)
+                	conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica_Prueba.db");
+            	else
+            		conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica.db");	
 			}
 		}catch(Exception e){
 			throw new ErrorBaseDeDatos("No se pudo establecer una conexion.");

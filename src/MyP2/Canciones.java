@@ -77,7 +77,7 @@ private static String tabla = "Canciones";
 	
 	public void realizaOperacion(String operacion){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion();
+		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		try{
 			stmt = conexion.createStatement();
@@ -115,7 +115,7 @@ private static String tabla = "Canciones";
 
 	public ResultSet realizaBusqueda(String operacion,int id,String param1,String param2){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion();
+		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
