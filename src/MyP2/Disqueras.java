@@ -19,35 +19,35 @@ public class Disqueras{
 
 	public Disqueras(){}
 
-	public String update(){
+	private String update(){
 		return "UPDATE " + tabla + " SET " + disquera + " = '" + label + "' WHERE " + id + " = " + idLabel + ";";
 	}
 
-	public String delete(){
+	private String delete(){
 		return "DELETE FROM " + tabla + " WHERE " + disquera + " = '" + label + "';";  
 	}
 
-	public String insert(){
+	private String insert(){
 		return "INSERT INTO " + tabla + "(" + id + "," + disquera + ") " +  " VALUES " + "('" + idLabel + "','" + label + "');";
 	}
 
-	public String select(int idLabel){
+	private String select(int idLabel){
 		return "SELECT " + disquera + " FROM " + tabla + " WHERE " + id + " = " + idLabel + ";";
 	}
 
-	public String selectTodo(){
+	private String selectTodo(){
 		return "SELECT " + disquera + " FROM " + tabla + ";";
 	}
 
-	public String selectTodoID(){
+	private String selectTodoID(){
 		return "SELECT * FROM " + tabla + ";";
 	}
 
-	public String selectLike(String label){
+	private String selectLike(String label){
 		return "SELECT " + disquera + " FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
 	}
 
-	public String selectLikeID(String label){
+	private String selectLikeID(String label){
 		return "SELECT * FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
 	}
 

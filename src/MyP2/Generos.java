@@ -19,27 +19,27 @@ public class Generos{
 
 	public Generos(){}
 
-	public String update(){
+	private String update(){
 		return "UPDATE " + tabla + " SET " + genero + " =' " + genre + "' WHERE " + id + " = " + idGenre + ";";
 	}
 
-	public String delete(){
+	private String delete(){
 		return "DELETE FROM " + tabla + " WHERE " + genero + " = '" + genre + "';";  
 	}
 
-	public String insert(){
+	private String insert(){
 		return "INSERT INTO " + tabla + "(" + id + "," + genero + ") " +  " VALUES " + "('" + idGenre + "','" + genre + "');";
 	}
 
-	public String select(int idGenre){
+	private String select(int idGenre){
 		return "SELECT " + genero + " FROM " + tabla + " WHERE " + id + " = " + idGenre + ";";
 	}
 
-	public String selectTodo(){
+	private String selectTodo(){
 		return "SELECT * FROM " + tabla + ";";
 	}
 
-	public String selectLike(String genre){
+	private String selectLike(String genre){
 		return "SELECT " + genero + " FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
 	}
 

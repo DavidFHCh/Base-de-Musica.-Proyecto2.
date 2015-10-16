@@ -19,35 +19,35 @@ public class Disqueras_Cancion{
 
 	public Disqueras_Cancion(){}
 
-	public String updateDisquera(){
+	private String updateDisquera(){
 		return "UPDATE " + tabla + " SET " + idDisquera + " ='" + idLabel + "' WHERE " + idSong + " = " + idCancion + ";";
 	}
 
-	public String updateCancion(){
+	private String updateCancion(){
 		return "UPDATE " + tabla + " SET " + idCancion + " ='" + idSong + "' WHERE " + idDisquera + " = " + idLabel + ";";
 	}
 
-	public String deleteDisquera(){
+	private String deleteDisquera(){
 		return "DELETE FROM " + tabla + " WHERE " + idDisquera + " = '" + idLabel + "';"; 
 	}
 
-	public String deleteCancion(){
+	private String deleteCancion(){
 		return "DELETE FROM " + tabla + " WHERE " + idCancion + " = '" + idSong + "';";  
 	}
 
-	public String insert(){
+	private String insert(){
 		return "INSERT INTO " + tabla + "(" + idDisquera + "," + idCancion + ") " +  " VALUES " + "('" + idLabel + "','" + idSong + "');"; 
 	}
 
-	public String selectDisquera(int idSong){
+	private String selectDisquera(int idSong){
 		return "SELECT " + idDisquera + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
-	public String selectCancion(int idLabel){
+	private String selectCancion(int idLabel){
 		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idDisquera + " = " + idLabel + ";";
 	}
 
-	public String selectTodo(){
+	private String selectTodo(){
 		return "SELECT * FROM " + tabla + ";";
 	}
 
