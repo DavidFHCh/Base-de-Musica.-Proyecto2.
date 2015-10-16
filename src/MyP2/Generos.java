@@ -43,6 +43,11 @@ public class Generos{
 		return "SELECT " + genero + " FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
 	}
 
+
+	public String selectLikeID(String genre){
+		return "SELECT * FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
+	}
+
 	public void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -91,6 +96,10 @@ public class Generos{
 					break;
 				case "selectLike":
 					comando = selectLike(param);
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectLikeID":
+					comando = selectLikeID(param);
 					rs = stmt.executeQuery(comando);
 					break;
 				default:

@@ -25,52 +25,72 @@ private static String tabla = "Canciones";
 
 	public Canciones(){}
 
-	public String update(){
+	private String update(){
 		return "UPDATE " + tabla + " SET " + anio + " = " + year + " , " + duracion + " = " + length + " WHERE " + id + " = " + idSong + ";";
 	}
 
-	public String updateAnio(){
+	private String updateAnio(){
 		return "UPDATE " + tabla + " SET " + anio + " = " + year + " WHERE " + id + " = " + idSong + ";";
 	}
 
-	public String updateDuracion(){
+	private String updateDuracion(){
 		return "UPDATE " + tabla + " SET " + duracion + " = " + length + " WHERE " + id + " = " + idSong + ";";
 	}
 
-	public String delete(){
+	private String delete(){
 		return "DELETE FROM " + tabla + " WHERE " + cancion + " = '" + song + "';";  
 	}
 
-	public String insert(){
+	private String insert(){
 		return "INSERT INTO " + tabla + "(" + id + "," + cancion + "," + anio + "," + duracion + ") " +  " VALUES " + "('" + idSong + "','" + song + "'," + year + "," + length + ");";
 	}
 
-	public String select(int idSong){
+	private String select(int idSong){
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE " + id + " = " + idSong + ";";
 	}
 
-	public String selectTodo(){
+	private String selectTodo(){
 		return "SELECT * FROM " + tabla + ";";
 	}
 
-	public String selectLike(String song){
+	private String selectLike(String song){
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE lower(" + cancion + ") LIKE '%" + song.toLowerCase() + "%';";
 	}
 
-	public String selectAnio(String year){
+	private String selectLikeID(String song){
+		return "SELECT * FROM " + tabla + " WHERE lower(" + cancion + ") LIKE '%" + song.toLowerCase() + "%';";
+	}
+
+	private String selectAnio(String year){
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE" + anio + " = " + year + ";";
 	}
 
-	public String selectEntreAnios(String anio1, String anio2){
+	private String selectAnioID(String year){
+		return "SELECT * FROM " + tabla + " WHERE" + anio + " = " + year + ";";
+	}
+
+	private String selectEntreAnios(String anio1, String anio2){
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE" + anio + " BETWEEN " + anio1 + " AND " + anio2 + ";";
 	}
 
-	public String selectDuracion(String length){
+	private String selectEntreAniosID(String anio1, String anio2){
+		return "SELECT * FROM " + tabla + " WHERE" + anio + " BETWEEN " + anio1 + " AND " + anio2 + ";";
+	}
+
+	private String selectDuracion(String length){
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE" + duracion + " = " + length + ";";
 	}
 
-	public String selectEntreDuraciones(String dur1, String dur2){
+	private String selectDuracionID(String length){
+		return "SELECT * FROM " + tabla + " WHERE" + duracion + " = " + length + ";";
+	}
+
+	private String selectEntreDuraciones(String dur1, String dur2){
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE" + duracion + " BETWEEN " + dur1 + " AND " + dur2 + ";";
+	}
+
+	private String selectEntreDuracionesID(String dur1, String dur2){
+		return "SELECT * FROM " + tabla + " WHERE" + duracion + " BETWEEN " + dur1 + " AND " + dur2 + ";";
 	}
 
 //falta corregir estos metodos que siguen.
@@ -133,20 +153,40 @@ private static String tabla = "Canciones";
 					comando = selectLike(param1);
 					rs = stmt.executeQuery(comando);
 					break;
+				case "selectLikeID":
+					comando = selectLikeID(param1);
+					rs = stmt.executeQuery(comando);
+					break;
 				case "selectAnio":
 					comando = selectAnio(param1);
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectAnioID":
+					comando = selectAnioID(param1);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectEntreAnios":
 					comando = selectEntreAnios(param1,param2);
 					rs = stmt.executeQuery(comando);
 					break;
+				case "selectEntreAniosID":
+					comando = selectEntreAniosID(param1,param2);
+					rs = stmt.executeQuery(comando);
+					break;
 				case "selectDuracion":
 					comando = selectDuracion(param1);
 					rs = stmt.executeQuery(comando);
 					break;
-					case "selectEntreDuraciones":
+				case "selectDuracionID":
+					comando = selectDuracionID(param1);
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectEntreDuraciones":
 					comando = selectEntreDuraciones(param1,param2);
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectEntreDuracionesID":
+					comando = selectEntreDuracionesID(param1,param2);
 					rs = stmt.executeQuery(comando);
 					break;
 				default:
