@@ -143,67 +143,63 @@ public class Generos_Cancion{
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
-		ResultSet rs1;
+		ResultSet rs1 = null,rs = null;
 		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
+		Canciones can = new Canciones();
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
 				case "joinCancionesAGenerosIDLike":
-					Canciones can = new Canciones();
-					ResultSet rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
+					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
-						comando = joinCancionesAGenerosID(iden.toString());
+						comando = joinCancionesAGenerosID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAGenerosIDAnio":
-					Canciones can = new Canciones();
-					ResultSet rs = can.realizaBusqueda("selectAnioID",0,param1,""); //metodo de clase Canciones.java
+					rs = can.realizaBusqueda("selectAnioID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
-						comando = joinCancionesAGenerosID(iden.toString());
+						comando = joinCancionesAGenerosID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAGenerosIDEntreAnios":
-					Canciones can = new Canciones();
-					ResultSet rs = can.realizaBusqueda("selectEntreAniosID",0,param1,param2); //metodo de clase Canciones.java
+					rs = can.realizaBusqueda("selectEntreAniosID",0,param1,param2); //metodo de clase Canciones.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
-						comando = joinCancionesAGenerosID(iden.toString());
+						comando = joinCancionesAGenerosID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAGenerosIDDuracion":
-					Canciones can = new Canciones();
-					ResultSet rs = can.realizaBusqueda("selectDuracionID",0,param1,""); //metodo de clase Canciones.java
+					rs = can.realizaBusqueda("selectDuracionID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
-						comando = joinCancionesAGenerosID(iden.toString());
+						comando = joinCancionesAGenerosID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAGenerosIDEntreDuraciones":
-					Canciones can = new Canciones();
-					ResultSet rs = can.realizaBusqueda("selectEntreDuracionesID",0,param1,param2); //metodo de clase Canciones.java
+					rs = can.realizaBusqueda("selectEntreDuracionesID",0,param1,param2); //metodo de clase Canciones.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
-						comando = joinCancionesAGenerosID(iden.toString());
+						comando = joinCancionesAGenerosID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					}
 					break;
 				case "joinGenerosACancionesID":
 					Generos gen = new Generos();
-					ResultSet rs = gen.realizaBusqueda("selectLikeID",0,param1); //metodo de clase Generos.java
+				    rs = gen.realizaBusqueda("selectLikeID",0,param1); //metodo de clase Generos.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
-						comando = joinGenerosACancionesID(iden.toString());
+						comando = joinGenerosACancionesID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					}	
