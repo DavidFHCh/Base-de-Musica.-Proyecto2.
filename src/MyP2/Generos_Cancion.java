@@ -139,7 +139,7 @@ public class Generos_Cancion{
 		return rs;
 	}
 
-	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,param2){
+	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
