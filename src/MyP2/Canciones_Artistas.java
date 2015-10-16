@@ -19,36 +19,52 @@ public class Canciones_Artistas{
 
 	public Canciones_Artistas(){}
 
-	public String updateArtista(){
+	private String updateArtista(){
 		return "UPDATE " + tabla + " SET " + idArtista + " ='" + idArtist + "' WHERE " + idSong + " = " + idCancion + ";";
 	}
 
-	public String updateCancion(){
+	private String updateCancion(){
 		return "UPDATE " + tabla + " SET " + idCancion + " ='" + idSong + "' WHERE " + idArtist + " = " + idArtista + ";";
 	}
 
-	public String deleteArtista(){
+	private String deleteArtista(){
 		return "DELETE FROM " + tabla + " WHERE " + idArtista + " = '" + idArtist + "';";
 	}
 
-	public String deleteCancion(){
+	private String deleteCancion(){
 		return "DELETE FROM " + tabla + " WHERE " + idCancion + " = '" + idSong + "';";  
 	}
 
-	public String insert(){
+	private String insert(){
 		return "INSERT INTO " + tabla + "(" + idArtista + "," + idCancion + ")" +  " VALUES " + "('" + idArtist + "','" + idSong + "');"; 
 	}
 
-	public String selectArtista(int idSong){
+	private String selectArtista(int idSong){
 		return "SELECT " + idArtista + " FROM " + tabla + " WHERE " + idCancion + " = " + idSong + ";";
 	}
 
-	public String selectCancion(int idArtist){
+	private String selectCancion(int idArtist){
 		return "SELECT " + idCancion + " FROM " + tabla + " WHERE " + idArtista + " = " + idArtist + ";";
 	}
 
-	public String selectTodo(){
+	private String selectTodo(){
 		return "SELECT * FROM " + tabla + ";";
+	}
+
+	private String selectTodoIdCancion(String id){
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idCancion +";";
+	}
+
+	private String selectTodoIdArtista(String id){
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idArtista +";";
+	}
+
+	private String joinCancionesAArtistasID(String id){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdCancion(id) + ") ON Artistas.id = " + idArtista + " and Canciones.id = " + idCancion + ";"; 
+	}
+
+	private String joinArtistasACancionesID(String id){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdArtista(id) + ") ON Artistas.id = " + idArtista + " and Canciones.id = " + idCancion + ";"; 
 	}
 
 	public void realizaOperacion(String operacion){
@@ -119,6 +135,83 @@ public class Canciones_Artistas{
 		}
 		Manejador.cerrarConexion();
 		return rs;
+	}
+
+	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
+		String comando = "";
+		Connection conexion = Manejador.abrirConexion(false);
+		Statement stmt = null;
+		ResultSet rs1 = null,rs = null;
+		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
+		Canciones can = new Canciones();
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "joinCancionesAArtistasIDLike":
+					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesAArtistasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesAArtistasIDAnio":
+					rs = can.realizaBusqueda("selectAnioID",0,param1,""); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesAArtistasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesAArtistasIDEntreAnios":
+					rs = can.realizaBusqueda("selectEntreAniosID",0,param1,param2); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesAArtistasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesAArtistasIDDuracion":
+					rs = can.realizaBusqueda("selectDuracionID",0,param1,""); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesAArtistasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesAArtistasIDEntreDuraciones":
+					rs = can.realizaBusqueda("selectEntreDuracionesID",0,param1,param2); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesAArtistasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinArtistasACancionesID":
+					Artistas art = new Artistas();
+				    rs = art.realizaBusqueda("selectLikeID",0,param1); //metodo de clase Artistas.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinArtistasACancionesID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}	
+					break;
+				default:
+				Manejador.cerrarConexion();
+				throw new ErrorBaseDeDatos("No conozco esa operacion."); 
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
+		}
+		Manejador.cerrarConexion();
+		return lrs;
 	}
 	
 }

@@ -51,6 +51,22 @@ public class Disqueras_Cancion{
 		return "SELECT * FROM " + tabla + ";";
 	}
 
+	private String selectTodoIdCancion(String id){
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idCancion +";";
+	}
+
+	private String selectTodoIdDisquera(String id){
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idDisquera +";";
+	}
+
+	private String joinCancionesADisquerasID(String id){
+		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodoIdCancion(id) + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion + ";"; 
+	}
+
+	private String joinDisquerasACancionesID(String id){
+		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodoIdDisquera(id) + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion + ";"; 
+	}
+
 	public void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -121,4 +137,81 @@ public class Disqueras_Cancion{
 		return rs;
 	}
 	
+	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
+		String comando = "";
+		Connection conexion = Manejador.abrirConexion(false);
+		Statement stmt = null;
+		ResultSet rs1 = null,rs = null;
+		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
+		Canciones can = new Canciones();
+		try{
+			stmt = conexion.createStatement();
+			switch(operacion){
+				case "joinCancionesADisquerasIDLike":
+					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesADisquerasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesADisquerasIDAnio":
+					rs = can.realizaBusqueda("selectAnioID",0,param1,""); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesADisquerasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesADisquerasIDEntreAnios":
+					rs = can.realizaBusqueda("selectEntreAniosID",0,param1,param2); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesADisquerasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesADisquerasIDDuracion":
+					rs = can.realizaBusqueda("selectDuracionID",0,param1,""); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesADisquerasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinCancionesADisquerasIDEntreDuraciones":
+					rs = can.realizaBusqueda("selectEntreDuracionesID",0,param1,param2); //metodo de clase Canciones.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinCancionesADisquerasID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}
+					break;
+				case "joinDisquerasACancionesID":
+					Disqueras disq = new Disqueras();
+				    rs = disq.realizaBusqueda("selectLikeID",0,param1); //metodo de clase Generos.java
+					while(rs.next()){
+						int iden = rs.getInt("id");
+						comando = joinDisquerasACancionesID(Integer.toString(iden));
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					}	
+					break;
+				default:
+				Manejador.cerrarConexion();
+				throw new ErrorBaseDeDatos("No conozco esa operacion."); 
+			}
+		}catch(SQLException sqle){
+			Manejador.cerrarConexion();
+			throw new ErrorBaseDeDatos("Algo paso.");
+		}
+		Manejador.cerrarConexion();
+		return lrs;
+	}
+
 }

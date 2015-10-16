@@ -58,7 +58,7 @@ public class Generos_Cancion{
 	private String selectTodoIdGenero(String id){
 		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idGenero +";";
 	}
-//falta meterlos al switch de abajo...
+
 	private String joinCancionesAGenerosID(String id){
 		return "SELECT cancion,año,duracion,generos FROM Canciones,Generos JOIN(" + selectTodoIdCancion(id) + ") ON Generos.id = " + idGenero + " and Canciones.id = " + idCancion + ";"; 
 	}
@@ -66,8 +66,6 @@ public class Generos_Cancion{
 	private String joinGenerosACancionesID(String id){
 		return "SELECT cancion,año,duracion,generos FROM Canciones,Generos JOIN(" + selectTodoIdGenero(id) + ") ON Generos.id = " + idGenero + " and Canciones.id = " + idCancion + ";"; 
 	}
-//hasta aqui
-
 
 	public void realizaOperacion(String operacion){
 		String comando = "";

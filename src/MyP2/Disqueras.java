@@ -36,11 +36,19 @@ public class Disqueras{
 	}
 
 	public String selectTodo(){
+		return "SELECT " + disquera + " FROM " + tabla + ";";
+	}
+
+	public String selectTodoID(){
 		return "SELECT * FROM " + tabla + ";";
 	}
 
 	public String selectLike(String label){
 		return "SELECT " + disquera + " FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
+	}
+
+	public String selectLikeID(String label){
+		return "SELECT * FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
 	}
 
 	public void realizaOperacion(String operacion){
@@ -89,8 +97,16 @@ public class Disqueras{
 					comando = selectTodo();
 					rs = stmt.executeQuery(comando);
 					break;
+				case "selectTodoID":
+					comando = selectTodoID();
+					rs = stmt.executeQuery(comando);
+					break;
 				case "selectLike":
 					comando = selectLike(param);
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectLikeID":
+					comando = selectLikeID(param);
 					rs = stmt.executeQuery(comando);
 					break;
 				default:

@@ -19,28 +19,36 @@ public class Artistas{
 
 	public Artistas(){}
 
-	public String update(){
+	private String update(){
 		return "UPDATE " + tabla + " SET " + artista + "='" + artist + "' WHERE " + id + " = " + idArtist + ";";
 	}
 
-	public String delete(){
+	private String delete(){
 		return "DELETE FROM " + tabla + " WHERE " + artista + " = '" + artist + "';";  
 	}
 
-	public String insert(){
+	private String insert(){
 		return "INSERT INTO " + tabla + "(" + id + "," + artista + ") " +  " VALUES " + "('" + idArtist + "','" + artist + "');"; 
 	}
 
-	public String select(int idArtist){
+	private String select(int idArtist){
 		return "SELECT " + artista + " FROM " + tabla + " WHERE " + id + " = " + idArtist + ";";
 	}
 
-	public String selectTodo(){
+	private String selectTodo(){
 		return "SELECT " + artista + " FROM " + tabla +";";
 	}
 
-	public String selectLike(String artist){
+	private String selectTodoID(){
+		return "SELECT * FROM " + tabla +";";
+	}
+
+	private String selectLike(String artist){
 		return "SELECT " + artista + " FROM " + tabla + " WHERE lower(" + artista + ") LIKE '%" + artist.toLowerCase() + "%';";
+	}
+
+	private String selectLikeID(String artist){
+		return "SELECT * FROM " + tabla + " WHERE lower(" + artista + ") LIKE '%" + artist.toLowerCase() + "%';";
 	}
 
 	public void realizaOperacion(String operacion){
