@@ -12,4 +12,8 @@ public class DisquerasSalida{
 			return disquera;
 		}
 
+		public String toString(){
+			return disquera;
+		}
+
 	}

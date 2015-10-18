@@ -12,4 +12,8 @@ public class ArtistasSalida{
 			return artista;
 		}
 
+		public String toString(){
+			return artista;
+		}
+
 }

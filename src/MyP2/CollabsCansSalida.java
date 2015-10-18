@@ -29,4 +29,8 @@ public class CollabsCansSalida{
 		public String getArtista(){
 			return artista;
 		}
+
+		public String toString(){
+			return cancion + ", " + anio + ", " + duracion + ", " + artista;
+		}
 }

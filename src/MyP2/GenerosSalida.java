@@ -11,4 +11,7 @@ public class GenerosSalida{
 		public String getGenero(){
 			return genero;
 		}
+		public String toString(){
+			return genero;
+		}
 }

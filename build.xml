@@ -79,7 +79,4 @@
       </batchtest>
     </junit>
   </target>
-  <target name="run" depends="compile.Proyecto2,Proyecto2.jar" description="Corre el programa.">
-    <java jar="Proyecto2.jar" fork="true" />
-  </target>
 </project>

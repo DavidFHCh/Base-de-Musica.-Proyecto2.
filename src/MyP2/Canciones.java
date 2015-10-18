@@ -63,6 +63,10 @@ private static String tabla = "Canciones";
 		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE " + id + " = " + idSong + ";";
 	}
 
+	private String selectTodoID(){
+		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + ";";
+	}
+
 	private String selectTodo(){
 		return "SELECT * FROM " + tabla + ";";
 	}
@@ -162,9 +166,11 @@ private static String tabla = "Canciones";
 	*/
 	public ResultSet realizaBusqueda(String operacion,int id,String param1,String param2){
 		String comando ="";
+				System.out.println("que paso??");
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		ResultSet rs = null;
+
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
@@ -174,6 +180,11 @@ private static String tabla = "Canciones";
 					break;
 				case "selectTodo":
 					comando = selectTodo();
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectTodoID":
+
+					comando = selectTodoID();
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectLike":

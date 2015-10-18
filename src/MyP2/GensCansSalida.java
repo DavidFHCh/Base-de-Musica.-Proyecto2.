@@ -29,4 +29,8 @@ public class GensCansSalida{
 		public String getGenero(){
 			return genero;
 		}
+
+		public String toString(){
+			return cancion + ", " + anio + ", " + duracion + ", " + genero;
+		}
 }

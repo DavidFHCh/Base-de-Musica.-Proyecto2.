@@ -29,4 +29,8 @@ public class DisqsCansSalida{
 		public String getDisquera(){
 			return disquera;
 		}
+
+		public String toString(){
+			return cancion + ", " + anio + ", " + duracion + ", " + disquera;
+		}
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Manejador{
 
 
-	private static Connection conexion;
+	public static Connection conexion;
 
 
 	/**
@@ -29,7 +29,7 @@ public class Manejador{
 				if(test)
                 	conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica_Prueba.db");
             	else
-            		conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica.db");	
+            		conexion = DriverManager.getConnection("jdbc:sqlite:Musica.db");	
 			}
 		}catch(Exception e){
 			throw new ErrorBaseDeDatos("No se pudo establecer una conexion.");
@@ -51,10 +51,9 @@ public class Manejador{
 		}
 	}
 
-	@SuppressWarnings("unchecked")
- 	public static ObservableList<CancionesSalida> obtenListaFinalCanciones(ResultSet rs){
- 		ObservableList<CancionesSalida> ol = null;
- 		List l = new ArrayList();
+	
+ 	public static LinkedList<CancionesSalida> obtenListaFinalCanciones(ResultSet rs){
+ 		LinkedList<CancionesSalida> l = new LinkedList<CancionesSalida>();
  		try{
  			while(rs.next()){
  				l.add(new CancionesSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion")));
@@ -62,14 +61,12 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	}
 
-	@SuppressWarnings("unchecked")
- 	public static ObservableList<ArtistasSalida> obtenListaFinalArtistas(ResultSet rs){
- 		ObservableList<ArtistasSalida> ol = null;
- 		List l = new ArrayList();
+	
+ 	public static LinkedList<ArtistasSalida> obtenListaFinalArtistas(ResultSet rs){
+ 		LinkedList<ArtistasSalida> l = new LinkedList<ArtistasSalida>();
  		try{
  			while(rs.next()){
  				l.add(new ArtistasSalida(rs.getString("artista")));
@@ -77,14 +74,12 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	}
 
- 	@SuppressWarnings("unchecked")
- 	public static ObservableList<DisquerasSalida> obtenListaFinalDisqueras(ResultSet rs){
- 		ObservableList<DisquerasSalida> ol = null;
- 		List l = new ArrayList();
+ 	
+ 	public static LinkedList<DisquerasSalida> obtenListaFinalDisqueras(ResultSet rs){
+ 		LinkedList<DisquerasSalida> l = new LinkedList<DisquerasSalida>();
  		try{
  			while(rs.next()){
  				l.add(new DisquerasSalida(rs.getString("Recod_Label")));
@@ -92,14 +87,12 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	}
 
- 	@SuppressWarnings("unchecked")
- 	public static ObservableList<GenerosSalida> obtenListaFinalGeneros(ResultSet rs){
- 		ObservableList<GenerosSalida> ol = null;
- 		List l = new ArrayList();
+ 	
+ 	public static LinkedList<GenerosSalida> obtenListaFinalGeneros(ResultSet rs){
+ 		LinkedList<GenerosSalida> l = new LinkedList<GenerosSalida>();
  		try{
  			while(rs.next()){
  				l.add(new GenerosSalida(rs.getString("generos")));
@@ -107,14 +100,12 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	}
 
- 	@SuppressWarnings("unchecked")
- 	public static ObservableList<CollabsCansSalida> obtenListaFinalColabsCans(ResultSet rs){
- 		ObservableList<CollabsCansSalida> ol = null;
- 		List l = new ArrayList();
+ 	
+ 	public static LinkedList<CollabsCansSalida> obtenListaFinalColabsCans(ResultSet rs){
+ 		LinkedList<CollabsCansSalida> l = new LinkedList<CollabsCansSalida>();
  		try{
  			while(rs.next()){
  				l.add(new CollabsCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("artista")));
@@ -122,14 +113,12 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	} 
 
- 	@SuppressWarnings("unchecked")
- 	public static ObservableList<DisqsCansSalida> obtenListaFinalDisqsCans(ResultSet rs){
- 		ObservableList<DisqsCansSalida> ol = null;
- 		List l = new ArrayList();
+ 	
+ 	public static LinkedList<DisqsCansSalida> obtenListaFinalDisqsCans(ResultSet rs){
+ 		LinkedList<DisqsCansSalida> l = new LinkedList<DisqsCansSalida>();
  		try{
  			while(rs.next()){
  				l.add(new DisqsCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("Recod_Label")));
@@ -137,14 +126,12 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	} 
 
- 	@SuppressWarnings("unchecked")
- 	public static ObservableList<GensCansSalida> obtenListaFinalGensCans(ResultSet rs){
- 		ObservableList<GensCansSalida> ol = null;
- 		List l = new ArrayList();
+ 	
+ 	public static LinkedList<GensCansSalida> obtenListaFinalGensCans(ResultSet rs){
+ 		LinkedList<GensCansSalida> l = new LinkedList<GensCansSalida>();
  		try{
  			while(rs.next()){
  				l.add(new GensCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("generos")));
@@ -152,7 +139,6 @@ public class Manejador{
  		}catch(Exception e){
  			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
  		}
-		ol = FXCollections.observableList(l);
- 		return ol;
+ 		return l;
  	} 
 }

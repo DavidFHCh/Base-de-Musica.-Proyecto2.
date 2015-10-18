@@ -23,4 +23,8 @@ public class CancionesSalida{
 		public String getDuracion(){
 			return duracion;
 		}
+
+		public String toString(){
+			return cancion + ", " + anio + ", " + duracion;
+		}
 }
