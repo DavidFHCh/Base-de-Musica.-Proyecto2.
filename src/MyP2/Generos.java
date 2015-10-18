@@ -4,10 +4,12 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+
 /**
 *	Clase que modela la tabla de Relaciones entre Generos.
 */
 public class Generos{
+
 
 	private static String tabla = "Generos";
 	private static String id = "id";
@@ -58,6 +60,7 @@ public class Generos{
 	public String selectLikeID(String genre){
 		return "SELECT * FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
 	}
+
 
 	/**
 	* Realiza operaciones que modifican la tabla.

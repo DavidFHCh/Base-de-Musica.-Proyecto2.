@@ -9,12 +9,12 @@ import org.sqlite.*;
 */
 public class Artistas{
 
+
 	private static String tabla = "Artistas";
 	private static String id = "id";
 	private static String artista = "artista";
 	private String artist;
 	private int idArtist;
-
 
 	/**
 	* Constructor para modelar un renglon de la tabla.
@@ -62,6 +62,7 @@ public class Artistas{
 	private String selectLikeID(String artist){
 		return "SELECT * FROM " + tabla + " WHERE lower(" + artista + ") LIKE '%" + artist.toLowerCase() + "%';";
 	}
+ 
 
 	/**
 	* Realiza operaciones que modifican la tabla.

@@ -3,11 +3,46 @@ package MyP2;
 import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
+import javafx.collections.*;
+import java.util.List;
+import java.util.ArrayList;
+
 
 /**
 *	Clase que modela la tabla de Relaciones entre Colaboraciones y Canciones.
 */
 public class Colaboraciones_Canciones{
+
+	public class CollabsCansSalida{
+
+		private String cancion;
+		private String anio;
+		private String duracion;
+		private String artista;
+
+		public CollabsCansSalida(String cancion,String anio,String duracion,String artista){
+			this.cancion = cancion;
+			this.anio = anio;
+			this.duracion = duracion;
+			this.artista = artista;
+		}
+
+		public String getCancion(){
+			return cancion;
+		}
+
+		public String getAnio(){
+			return anio;
+		}
+
+		public String getDuracion(){
+			return duracion;
+		}
+
+		public String getArtista(){
+			return artista;
+		}
+	}
 
 	private static String tabla = "Colaboraciones_Canciones";
 	private static String idColaboracion = "id_artista_grupo";
@@ -77,6 +112,21 @@ public class Colaboraciones_Canciones{
 	private String joinArtistasACancionesID(String id){
 		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdColaboracion(id) + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + ";"; 
 	}
+
+	@SuppressWarnings("unchecked")
+ 	private ObservableList<CollabsCansSalida> obtenListaFinal(ResultSet rs){
+ 		ObservableList<CollabsCansSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new CollabsCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("artista")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	} 
 
 	/**
 	* Realiza operaciones que modifican la tabla.
@@ -167,12 +217,11 @@ public class Colaboraciones_Canciones{
 	* @return ResultSet 
 	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
 	*/
-	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
+	public ObservableList<CollabsCansSalida> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
 		ResultSet rs1 = null,rs = null;
-		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
 		Canciones can = new Canciones();
 		try{
 			stmt = conexion.createStatement();
@@ -183,7 +232,6 @@ public class Colaboraciones_Canciones{
 						int iden = rs.getInt("id");
 						comando = joinCancionesAArtistasID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
-						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAArtistasIDAnio":
@@ -192,7 +240,6 @@ public class Colaboraciones_Canciones{
 						int iden = rs.getInt("id");
 						comando = joinCancionesAArtistasID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
-						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAArtistasIDEntreAnios":
@@ -201,7 +248,6 @@ public class Colaboraciones_Canciones{
 						int iden = rs.getInt("id");
 						comando = joinCancionesAArtistasID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
-						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAArtistasIDDuracion":
@@ -210,7 +256,6 @@ public class Colaboraciones_Canciones{
 						int iden = rs.getInt("id");
 						comando = joinCancionesAArtistasID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
-						lrs.add(rs1);
 					}
 					break;
 				case "joinCancionesAArtistasIDEntreDuraciones":
@@ -219,7 +264,6 @@ public class Colaboraciones_Canciones{
 						int iden = rs.getInt("id");
 						comando = joinCancionesAArtistasID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
-						lrs.add(rs1);
 					}
 					break;
 				case "joinArtistasACancionesID":
@@ -229,7 +273,6 @@ public class Colaboraciones_Canciones{
 						int iden = rs.getInt("id");
 						comando = joinArtistasACancionesID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
-						lrs.add(rs1);
 					}	
 					break;
 				default:
@@ -241,6 +284,6 @@ public class Colaboraciones_Canciones{
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
-		return lrs;
+		return obtenListaFinal(rs1);
 	}
 }

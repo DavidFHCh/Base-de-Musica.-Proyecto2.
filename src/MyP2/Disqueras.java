@@ -15,6 +15,8 @@ public class Disqueras{
 	private String label;
 	private int idLabel;
 
+	
+
 	/**
 	* Constructor para modelar un renglon de la tabla.
 	* @param idLabel identificador de este renglon. 
@@ -60,14 +62,14 @@ public class Disqueras{
 
 	private String selectLikeID(String label){
 		return "SELECT * FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
-	}
+	} 
 
 	/**
 	* Realiza operaciones que modifican la tabla.
 	* @param operacion puede recibir cualquiera de estas frases: update, delete, insert.
 	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
 	*/
-	public void realizaOperacion(String operacion){
+	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -97,7 +99,7 @@ public class Disqueras{
 		Manejador.cerrarConexion();
 	}
 
-/**
+	/**
 	* Realiza operaciones sencillas de busqueda en la tabla.
 	* @param operacion puede recibir cualquiera de estas frases: select, selectTodo,selectLike.
 	* @param id se requiere para la operacion select.
@@ -105,7 +107,7 @@ public class Disqueras{
 	* @return ResultSet 
 	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
 	*/
-	public synchronized ResultSet realizaBusqueda(String operacion, int id, String param){
+	public ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;

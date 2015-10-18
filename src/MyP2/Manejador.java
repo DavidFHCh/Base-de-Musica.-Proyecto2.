@@ -3,13 +3,18 @@ package MyP2;
 import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
+import javafx.collections.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
 * Clase Manejadora de la base de datos.
 */
 public class Manejador{
 
+
 	private static Connection conexion;
+
 
 	/**
 	* Establece una conexion con la base de datos.
@@ -46,4 +51,63 @@ public class Manejador{
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+ 	public static ObservableList<CancionesSalida> obtenListaFinalCanciones(ResultSet rs){
+ 		ObservableList<CancionesSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new CancionesSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	}
+
+	@SuppressWarnings("unchecked")
+ 	public static ObservableList<ArtistasSalida> obtenListaFinalArtistas(ResultSet rs){
+ 		ObservableList<ArtistasSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new ArtistasSalida(rs.getString("artista")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	}
+
+ 	@SuppressWarnings("unchecked")
+ 	public static ObservableList<DisquerasSalida> obtenListaFinalDisqueras(ResultSet rs){
+ 		ObservableList<DisquerasSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new DisquerasSalida(rs.getString("Recod_Label")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	}
+
+ 	@SuppressWarnings("unchecked")
+ 	public static ObservableList<GenerosSalida> obtenListaFinalGeneros(ResultSet rs){
+ 		ObservableList<GenerosSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new GenerosSalida(rs.getString("generos")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	}
 }

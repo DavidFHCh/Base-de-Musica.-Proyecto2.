@@ -9,6 +9,7 @@ import org.sqlite.*;
 */
 public class Canciones{
 
+
 private static String tabla = "Canciones";
 	private static String id = "id";
 	private static String cancion = "cancion";
@@ -105,6 +106,7 @@ private static String tabla = "Canciones";
 	private String selectEntreDuracionesID(String dur1, String dur2){
 		return "SELECT * FROM " + tabla + " WHERE" + duracion + " BETWEEN " + dur1 + " AND " + dur2 + ";";
 	}
+ 
 
 	/**
 	* Realiza operaciones que modifican la tabla.
