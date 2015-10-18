@@ -110,4 +110,49 @@ public class Manejador{
 		ol = FXCollections.observableList(l);
  		return ol;
  	}
+
+ 	@SuppressWarnings("unchecked")
+ 	public static ObservableList<CollabsCansSalida> obtenListaFinalColabsCans(ResultSet rs){
+ 		ObservableList<CollabsCansSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new CollabsCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("artista")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	} 
+
+ 	@SuppressWarnings("unchecked")
+ 	public static ObservableList<DisqsCansSalida> obtenListaFinalDisqsCans(ResultSet rs){
+ 		ObservableList<DisqsCansSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new DisqsCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("Recod_Label")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	} 
+
+ 	@SuppressWarnings("unchecked")
+ 	public static ObservableList<GensCansSalida> obtenListaFinalGensCans(ResultSet rs){
+ 		ObservableList<GensCansSalida> ol = null;
+ 		List l = new ArrayList();
+ 		try{
+ 			while(rs.next()){
+ 				l.add(new GensCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("generos")));
+ 			}	
+ 		}catch(Exception e){
+ 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
+ 		}
+		ol = FXCollections.observableList(l);
+ 		return ol;
+ 	} 
 }

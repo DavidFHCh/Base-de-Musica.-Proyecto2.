@@ -13,37 +13,6 @@ import java.util.ArrayList;
 */
 public class Colaboraciones_Canciones{
 
-	public class CollabsCansSalida{
-
-		private String cancion;
-		private String anio;
-		private String duracion;
-		private String artista;
-
-		public CollabsCansSalida(String cancion,String anio,String duracion,String artista){
-			this.cancion = cancion;
-			this.anio = anio;
-			this.duracion = duracion;
-			this.artista = artista;
-		}
-
-		public String getCancion(){
-			return cancion;
-		}
-
-		public String getAnio(){
-			return anio;
-		}
-
-		public String getDuracion(){
-			return duracion;
-		}
-
-		public String getArtista(){
-			return artista;
-		}
-	}
-
 	private static String tabla = "Colaboraciones_Canciones";
 	private static String idColaboracion = "id_artista_grupo";
 	private static String idCancion = "id_cancion";
@@ -112,21 +81,6 @@ public class Colaboraciones_Canciones{
 	private String joinArtistasACancionesID(String id){
 		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdColaboracion(id) + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + ";"; 
 	}
-
-	@SuppressWarnings("unchecked")
- 	private ObservableList<CollabsCansSalida> obtenListaFinal(ResultSet rs){
- 		ObservableList<CollabsCansSalida> ol = null;
- 		List l = new ArrayList();
- 		try{
- 			while(rs.next()){
- 				l.add(new CollabsCansSalida(rs.getString("cancion"),rs.getString("año"),rs.getString("duracion"),rs.getString("artista")));
- 			}	
- 		}catch(Exception e){
- 			throw new ErrorBaseDeDatos("Error al llenar Lista Final");
- 		}
-		ol = FXCollections.observableList(l);
- 		return ol;
- 	} 
 
 	/**
 	* Realiza operaciones que modifican la tabla.
@@ -217,7 +171,7 @@ public class Colaboraciones_Canciones{
 	* @return ResultSet 
 	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
 	*/
-	public ObservableList<CollabsCansSalida> realizaBusquedaEspecial(String operacion, String param1,String param2){
+	public ResultSet realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -284,6 +238,6 @@ public class Colaboraciones_Canciones{
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		Manejador.cerrarConexion();
-		return obtenListaFinal(rs1);
+		return rs1;
 	}
 }
