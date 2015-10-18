@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+/**
+*	Clase que modela la tabla de Relaciones entre Generos y Canciones.
+*/
 public class Generos_Cancion{
 
 	private static String tabla = "Generos_Cancion";
@@ -12,11 +15,19 @@ public class Generos_Cancion{
 	private int idGenre;
 	private int idSong;
 
+	/**
+	* Constructor para modelar un renglon de la tabla.
+	* @param idGenre identificador de este renglon. 
+	* @param idSong identificador de la cancion.
+	*/
 	public Generos_Cancion(int idGenre, int idSong){
 		this.idGenre = idGenre;
 		this.idSong = idSong;
 	}
 
+	/**
+	* Constructor vacio.
+	*/
 	public Generos_Cancion(){}
 
 	private String updateGenero(){
@@ -67,7 +78,12 @@ public class Generos_Cancion{
 		return "SELECT cancion,año,duracion,generos FROM Canciones,Generos JOIN(" + selectTodoIdGenero(id) + ") ON Generos.id = " + idGenero + " and Canciones.id = " + idCancion + ";"; 
 	}
 
-	public void realizaOperacion(String operacion){
+	/**
+	* Realiza operaciones que modifican la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: updateGenero, updateCancion, deleteGenero, deleteCancion, insert.
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
+	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -105,6 +121,13 @@ public class Generos_Cancion{
 		Manejador.cerrarConexion();
 	}
 
+	/**
+	* Realiza operaciones sencillas de busqueda en la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: selectTodo,selectCancion,selectGenero.
+	* @param id para saber que se esta buscando.
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public ResultSet realizaBusqueda(String operacion, int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -137,6 +160,14 @@ public class Generos_Cancion{
 		return rs;
 	}
 
+	/**
+	* Realiza operaciones no triviales de busqueda entre dos tablas.
+	* @param operacion puede recibir cualquiera de estas frases: joinCancionesAGenerosIDLike,joinCancionesAGenerosIDAnio,joinCancionesAGenerosIDEntreAnios,joinCancionesAGenerosIDDuracion,joinCancionesAGenerosIDEntreDuraciones,joinGenerosACancionesID.
+	* @param param1 Se le pasan los parametros para realizar la busqueda.
+	* @param param2 Se le pasan los parametros para realizar la busqueda. 
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);

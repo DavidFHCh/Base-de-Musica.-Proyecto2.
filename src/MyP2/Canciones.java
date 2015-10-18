@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+/**
+*	Clase que modela la tabla de canciones.
+*/
 public class Canciones{
 
 private static String tabla = "Canciones";
@@ -16,6 +19,13 @@ private static String tabla = "Canciones";
 	private String length;
 	private int idSong;
 
+	/**
+	* Constructor para modelar un renglon de la tabla.
+	* @param idGenre identificador de este renglon. 
+	* @param song nombre de la canocion.
+	* @param year año de la cancion.
+	* @param length duracion de la cancion.
+	*/
 	public Canciones(int idGenre, String song, String year, String length){
 		this.idSong = idSong;
 		this.year = year;
@@ -23,6 +33,9 @@ private static String tabla = "Canciones";
 		this.song = song;
 	}
 
+	/**
+	* Constructor vacio.
+	*/
 	public Canciones(){}
 
 	private String update(){
@@ -93,9 +106,12 @@ private static String tabla = "Canciones";
 		return "SELECT * FROM " + tabla + " WHERE" + duracion + " BETWEEN " + dur1 + " AND " + dur2 + ";";
 	}
 
-//falta corregir estos metodos que siguen.
-	
-	public void realizaOperacion(String operacion){
+	/**
+	* Realiza operaciones que modifican la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: update, updateAnio, updateDuracion, delete, insert.
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
+	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -133,6 +149,15 @@ private static String tabla = "Canciones";
 		Manejador.cerrarConexion();
 	}
 
+	/**
+	* Realiza operaciones sencillas de busqueda en la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: select, selectTodo,selectLike,selectAnio, selectEnteAnios, selectDuracion, selectEntreDuraciones.
+	* @param id se requiere para la operacion select.
+	* @param param1 Terminos de la busqueda de las dos tablas.  
+	* @param param2 Terminos de la busqueda de las dos tablas.
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public ResultSet realizaBusqueda(String operacion,int id,String param1,String param2){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);

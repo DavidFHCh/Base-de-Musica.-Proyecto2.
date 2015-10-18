@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+/**
+*	Clase que modela la tabla de Relaciones entre Disqueras y Canciones.
+*/
 public class Disqueras_Cancion{
 
 	private static String tabla = "Disqueras_Cancion";
@@ -12,11 +15,19 @@ public class Disqueras_Cancion{
 	private int idLabel;
 	private int idSong;
 
+	/**
+	* Constructor para modelar un renglon de la tabla.
+	* @param idLabel identificador de este renglon. 
+	* @param idSong identificador de la cancion.
+	*/
 	public Disqueras_Cancion(int idLabel, int idSong){
 		this.idLabel = idLabel;
 		this.idSong = idSong;
 	}
 
+	/**
+	* Constructor vacio.
+	*/
 	public Disqueras_Cancion(){}
 
 	private String updateDisquera(){
@@ -67,7 +78,12 @@ public class Disqueras_Cancion{
 		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodoIdDisquera(id) + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion + ";"; 
 	}
 
-	public void realizaOperacion(String operacion){
+/**
+	* Realiza operaciones que modifican la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: updateDisquera, updateCancion, deleteDisquera, deleteCancion, insert.
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/	
+	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -105,6 +121,13 @@ public class Disqueras_Cancion{
 		Manejador.cerrarConexion();
 	}
 
+	/**
+	* Realiza operaciones sencillas de busqueda en la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: selectTodo,selectCancion,selectDisquera.
+	* @param id para saber que se esta buscando.
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public ResultSet realizaBusqueda(String operacion, int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -137,6 +160,14 @@ public class Disqueras_Cancion{
 		return rs;
 	}
 	
+	/**
+	* Realiza operaciones no triviales de busqueda entre dos tablas.
+	* @param operacion puede recibir cualquiera de estas frases: joinCancionesADisquerasIDLike,joinCancionesADisquerasIDAnio,joinCancionesADisquerasIDEntreAnios,joinCancionesADisquerasIDDuracion,joinCancionesADisquerasIDEntreDuraciones,joinDisquerasACancionesID.
+	* @param param1 Se le pasan los parametros para realizar la busqueda.
+	* @param param2 Se le pasan los parametros para realizar la busqueda. 
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);

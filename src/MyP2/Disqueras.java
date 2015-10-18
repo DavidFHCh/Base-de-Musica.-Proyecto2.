@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+/**
+*	Clase que modela la tabla de Relaciones entre Disqueras.
+*/
 public class Disqueras{
 
 	private static String tabla = "";
@@ -12,11 +15,19 @@ public class Disqueras{
 	private String label;
 	private int idLabel;
 
+	/**
+	* Constructor para modelar un renglon de la tabla.
+	* @param idLabel identificador de este renglon. 
+	* @param label nombre del artista.
+	*/
 	public Disqueras(int idLabel, String label){
 		this.idLabel = idLabel;
 		this.label = label;
 	}
 
+	/**
+	* Constructor vacio.
+	*/
 	public Disqueras(){}
 
 	private String update(){
@@ -51,6 +62,11 @@ public class Disqueras{
 		return "SELECT * FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
 	}
 
+	/**
+	* Realiza operaciones que modifican la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: update, delete, insert.
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -81,7 +97,15 @@ public class Disqueras{
 		Manejador.cerrarConexion();
 	}
 
-	public ResultSet realizaBusqueda(String operacion, int id, String param){
+/**
+	* Realiza operaciones sencillas de busqueda en la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: select, selectTodo,selectLike.
+	* @param id se requiere para la operacion select.
+	* @param param Terminos de la busqueda de las dos tablas.
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
+	public synchronized ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;

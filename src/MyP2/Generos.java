@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+/**
+*	Clase que modela la tabla de Relaciones entre Generos.
+*/
 public class Generos{
 
 	private static String tabla = "Generos";
@@ -12,11 +15,19 @@ public class Generos{
 	private String genre;
 	private int idGenre;
 
+	/**
+	* Constructor para modelar un renglon de la tabla.
+	* @param idGenre identificador de este renglon. 
+	* @param genre nombre del artista.
+	*/
 	public Generos(int idGenre, String genre){
 		this.idGenre = idGenre;
 		this.genre = genre;
 	}
 
+	/**
+	* Constructor vacio.
+	*/
 	public Generos(){}
 
 	private String update(){
@@ -48,7 +59,12 @@ public class Generos{
 		return "SELECT * FROM " + tabla + " WHERE lower(" + genero + ") LIKE '%" + genre.toLowerCase() + "%';";
 	}
 
-	public void realizaOperacion(String operacion){
+	/**
+	* Realiza operaciones que modifican la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: update, delete, insert.
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
+	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -78,6 +94,14 @@ public class Generos{
 		Manejador.cerrarConexion();
 	}
 
+	/**
+	* Realiza operaciones sencillas de busqueda en la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: select, selectTodo,selectLike.
+	* @param id se requiere para la operacion select.
+	* @param param Terminos de la busqueda de las dos tablas.
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);

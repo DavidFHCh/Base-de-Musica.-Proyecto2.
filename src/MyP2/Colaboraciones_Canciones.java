@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.*;
 import org.sqlite.*;
 
+/**
+*	Clase que modela la tabla de Relaciones entre Colaboraciones y Canciones.
+*/
 public class Colaboraciones_Canciones{
 
 	private static String tabla = "Colaboraciones_Canciones";
@@ -12,11 +15,19 @@ public class Colaboraciones_Canciones{
 	private int idCollab;
 	private int idSong;
 
+	/**
+	* Constructor para modelar un renglon de la tabla.
+	* @param idCollab identificador de este renglon. 
+	* @param idSong identificador de la cancion.
+	*/
 	public Colaboraciones_Canciones(int idCollab, int idSong){
 		this.idCollab = idCollab;
 		this.idSong = idSong;
 	}
 
+	/**
+	* Constructor vacio.
+	*/
 	public Colaboraciones_Canciones(){}
 
 	private String updateColaboracion(){
@@ -67,7 +78,12 @@ public class Colaboraciones_Canciones{
 		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdColaboracion(id) + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + ";"; 
 	}
 
-	public void realizaOperacion(String operacion){
+	/**
+	* Realiza operaciones que modifican la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: updateColaboracion, updateCancion, deleteColaboracion, deleteCancion, insert.
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
+	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
 		Statement stmt = null;
@@ -105,6 +121,13 @@ public class Colaboraciones_Canciones{
 		Manejador.cerrarConexion();
 	}
 
+	/**
+	* Realiza operaciones sencillas de busqueda en la tabla.
+	* @param operacion puede recibir cualquiera de estas frases: selectTodo,selectCancion,selectColaboracion.
+	* @param id para saber que se esta buscando.
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public ResultSet realizaBusqueda(String operacion,int id){
 		String comando ="";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -136,6 +159,14 @@ public class Colaboraciones_Canciones{
 		return rs;
 	}
 	
+	/**
+	* Realiza operaciones no triviales de busqueda entre dos tablas.
+	* @param operacion puede recibir cualquiera de estas frases: joinCancionesAColaboracionesIDLike,joinCancionesAColaboracionesIDAnio,joinCancionesAColaboracionesIDEntreAnios,joinCancionesAColaboracionesIDDuracion,joinCancionesAColaboracionesIDEntreDuraciones,joinColaboracionesACancionesID.
+	* @param param1 Se le pasan los parametros para realizar la busqueda.
+	* @param param2 Se le pasan los parametros para realizar la busqueda. 
+	* @return ResultSet 
+	* @throws ErrorBaseDeDatos si no se puede realizar la operacion.
+	*/
 	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
 		Connection conexion = Manejador.abrirConexion(false);
@@ -146,7 +177,7 @@ public class Colaboraciones_Canciones{
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
-				case "joinCancionesAArtistasIDLike":
+				case "joinCancionesAColaboracionesIDLike":
 					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
