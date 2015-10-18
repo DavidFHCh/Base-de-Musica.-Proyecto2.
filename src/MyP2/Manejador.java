@@ -22,14 +22,11 @@ public class Manejador{
 	* @return Connection
 	* @throws ErrorBaseDeDatos cuando pasa algo con el archivo de la base.
 	*/
-	public synchronized static Connection abrirConexion(boolean test){
+	public synchronized static Connection abrirConexion(){
 		try{
 			if(conexion == null || conexion.isClosed()){
 				Class.forName("org.sqlite.JDBC");
-				if(test)
-                	conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica_Prueba.db");
-            	else
-            		conexion = DriverManager.getConnection("jdbc:sqlite:Musica.db");	
+            	conexion = DriverManager.getConnection("jdbc:sqlite:./lib/Musica.db");	
 			}
 		}catch(Exception e){
 			throw new ErrorBaseDeDatos("No se pudo establecer una conexion.");

@@ -72,7 +72,7 @@ public class Artistas{
 	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
 		Statement stmt = null;
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
@@ -109,7 +109,7 @@ public class Artistas{
 	*/
 	public ResultSet realizaBusqueda(String operacion,int id, String param1){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
@@ -128,14 +128,14 @@ public class Artistas{
 					rs = stmt.executeQuery(comando);
 					break;
 				default:
-					Manejador.cerrarConexion();
+					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
 		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+			
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
+		
 		return rs;
 	}
 }

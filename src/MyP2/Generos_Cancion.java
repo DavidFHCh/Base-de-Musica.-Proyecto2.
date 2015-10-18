@@ -61,15 +61,15 @@ public class Generos_Cancion{
 	}
 
 	private String selectTodo(){
-		return "SELECT * FROM " + tabla + ";";
+		return "SELECT * FROM " + tabla;
 	}
 
 	private String selectTodoIdCancion(String id){
-		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idCancion +";";
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idCancion;
 	}
 
 	private String selectTodoIdGenero(String id){
-		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idGenero +";";
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idGenero;
 	}
 
 	private String joinCancionesAGenerosID(String id){
@@ -80,6 +80,10 @@ public class Generos_Cancion{
 		return "SELECT cancion,año,duracion,generos FROM Canciones,Generos JOIN(" + selectTodoIdGenero(id) + ") ON Generos.id = " + idGenero + " and Canciones.id = " + idCancion + ";"; 
 	}
 
+	private String joinTodo(){
+		return "SELECT cancion,año,duracion,generos FROM Canciones,Generos JOIN(" + selectTodo() + ") ON Generos.id = " + idGenero + " and Canciones.id = " + idCancion + ";"; 
+	}
+
 	/**
 	* Realiza operaciones que modifican la tabla.
 	* @param operacion puede recibir cualquiera de estas frases: updateGenero, updateCancion, deleteGenero, deleteCancion, insert.
@@ -87,7 +91,7 @@ public class Generos_Cancion{
 	*/
 	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		try{
 			stmt = conexion.createStatement();
@@ -132,7 +136,7 @@ public class Generos_Cancion{
 	*/
 	public ResultSet realizaBusqueda(String operacion, int id){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
@@ -151,14 +155,14 @@ public class Generos_Cancion{
 					rs = stmt.executeQuery(comando);
 					break;
 				default:
-					Manejador.cerrarConexion();
+					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
 		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+			
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
+		
 		return rs;
 	}
 
@@ -172,7 +176,7 @@ public class Generos_Cancion{
 	*/
 	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs1 = null,rs = null;
 		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
@@ -180,6 +184,11 @@ public class Generos_Cancion{
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
+				case "joinTodo":
+						comando = joinTodo();
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					break;
 				case "joinCancionesAGenerosIDLike":
 					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
@@ -236,14 +245,14 @@ public class Generos_Cancion{
 					}	
 					break;
 				default:
-				Manejador.cerrarConexion();
+				
 				throw new ErrorBaseDeDatos("No conozco esa operacion."); 
 			}
 		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+			
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
+		
 		return lrs;
 	}
 	

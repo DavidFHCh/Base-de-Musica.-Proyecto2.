@@ -60,15 +60,19 @@ public class Canciones_Artistas{
 	}
 
 	private String selectTodo(){
-		return "SELECT * FROM " + tabla + ";";
+		return "SELECT * FROM " + tabla;
 	}
 
 	private String selectTodoIdCancion(String id){
-		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idCancion +";";
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idCancion;
 	}
 
 	private String selectTodoIdArtista(String id){
-		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idArtista +";";
+		return "SELECT * FROM " + tabla + " WHERE " + id + " = " + idArtista;
+	}
+
+	private String joinTodo(){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodo() + ") ON Artistas.id = " + idArtista + " and Canciones.id = " + idCancion + ";"; 
 	}
 
 	private String joinCancionesAArtistasID(String id){
@@ -86,7 +90,7 @@ public class Canciones_Artistas{
 	*/
 	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		try{
 			stmt = conexion.createStatement();
@@ -131,7 +135,7 @@ public class Canciones_Artistas{
 	*/
 	public ResultSet realizaBusqueda(String operacion,int id){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
@@ -150,14 +154,14 @@ public class Canciones_Artistas{
 					rs = stmt.executeQuery(comando);
 					break;
 				default:
-					Manejador.cerrarConexion();
+					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
 		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+			
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
+		
 		return rs;
 	}
 
@@ -171,7 +175,7 @@ public class Canciones_Artistas{
 	*/
 	public LinkedList<ResultSet> realizaBusquedaEspecial(String operacion, String param1,String param2){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs1 = null,rs = null;
 		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
@@ -179,6 +183,11 @@ public class Canciones_Artistas{
 		try{
 			stmt = conexion.createStatement();
 			switch(operacion){
+				case "joinTodo":
+						comando = joinTodo();
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					break;
 				case "joinCancionesAArtistasIDLike":
 					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
@@ -235,14 +244,14 @@ public class Canciones_Artistas{
 					}	
 					break;
 				default:
-				Manejador.cerrarConexion();
+				
 				throw new ErrorBaseDeDatos("No conozco esa operacion."); 
 			}
 		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+			
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
+		
 		return lrs;
 	}
 	

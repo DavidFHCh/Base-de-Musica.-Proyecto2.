@@ -119,7 +119,7 @@ private static String tabla = "Canciones";
 	*/
 	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		try{
 			stmt = conexion.createStatement();
@@ -166,8 +166,7 @@ private static String tabla = "Canciones";
 	*/
 	public ResultSet realizaBusqueda(String operacion,int id,String param1,String param2){
 		String comando ="";
-				System.out.println("que paso??");
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs = null;
 
@@ -183,7 +182,6 @@ private static String tabla = "Canciones";
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectTodoID":
-
 					comando = selectTodoID();
 					rs = stmt.executeQuery(comando);
 					break;
@@ -227,15 +225,12 @@ private static String tabla = "Canciones";
 					comando = selectEntreDuracionesID(param1,param2);
 					rs = stmt.executeQuery(comando);
 					break;
-				default:
-					Manejador.cerrarConexion();
+				default:					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
-		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+		}catch(Exception sqle){	
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
 		return rs;
 	}
 	

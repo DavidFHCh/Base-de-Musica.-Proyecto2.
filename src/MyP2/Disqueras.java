@@ -15,7 +15,6 @@ public class Disqueras{
 	private String label;
 	private int idLabel;
 
-	
 
 	/**
 	* Constructor para modelar un renglon de la tabla.
@@ -71,7 +70,7 @@ public class Disqueras{
 	*/
 	public synchronized void realizaOperacion(String operacion){
 		String comando = "";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		try{
 			stmt = conexion.createStatement();
@@ -109,7 +108,7 @@ public class Disqueras{
 	*/
 	public ResultSet realizaBusqueda(String operacion, int id, String param){
 		String comando ="";
-		Connection conexion = Manejador.abrirConexion(false);
+		Connection conexion = Manejador.abrirConexion();
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
@@ -136,14 +135,14 @@ public class Disqueras{
 					rs = stmt.executeQuery(comando);
 					break;
 				default:
-					Manejador.cerrarConexion();
+					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
 		}catch(SQLException sqle){
-			Manejador.cerrarConexion();
+			
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
-		Manejador.cerrarConexion();
+		
 		return rs;
 	}
 	

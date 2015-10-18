@@ -74,18 +74,66 @@ public class VistaController implements Initializable {
     		matcheador(durMenorText,palabras) || matcheador(anioText,palabras) || matcheador(anioMenorText,palabras)){
     		printTextField("No puedo realizar la accion solicitada.");
     	}else{
-    		if(cancionText.equals("TODO")){
-    			Canciones c = new Canciones();
-    			ResultSet rs = c.realizaBusqueda("selectTodoID",0,"","");
-    			LinkedList<CancionesSalida> l = Manejador.obtenListaFinalCanciones(rs);
-    			String s = "";
-    			for(CancionesSalida cs : l){
-    				s += cs.toString();
-    			}
-    			printTextField(s);
-    		}
-    	}
+    		LinkedList<Integer> casos = getCasos(cancionText,artistaText, colaboracionText, durMayorText, anioMayorText, disqueraText, generoText, duracionText, durMenorText, anioText, anioMenorText);
+    		ResultSet rs = null;
+    		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
+    		String salida = "";
+    		for(int i : casos){
+    			switch(i){
+    				case 1:
+    					Colaboraciones_Canciones cc = new Colaboraciones_Canciones();
+    					salida += "Cancion, Año, Duracion, Colaboracion\n";
+    					lrs = cc.realizaBusquedaEspecial("joinTodo","","");
+    					for(ResultSet rs1: lrs){
+    						LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    						for(CollabsCansSalida ccs : ls){
+    							salida += ccs.toString() + "\n";
+    						}
+    					}
+    					salida += saltos();
+    					break;
+    				case 2:
+    					salida += "Cancion, Año, Duracion, Artista\n";
+    					Canciones_Artistas cc1 = new Canciones_Artistas();
+    					lrs = cc1.realizaBusquedaEspecial("joinTodo","","");
+    					for(ResultSet rs1: lrs){
+    						LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    						for(CollabsCansSalida ccs : ls){
+    							salida += ccs.toString() + "\n";
+    						}
+    					}
+    					salida += saltos();
+    					break;
+    				case 3:
+    					salida += "Cancion, Año, Duracion, Genero\n";
+    					Generos_Cancion cc2 = new Generos_Cancion();
+    					lrs = cc2.realizaBusquedaEspecial("joinTodo","","");
+    					for(ResultSet rs1: lrs){
+    						LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    						for(GensCansSalida ccs : ls){
+    							salida += ccs.toString() + "\n";
+    						}
+    					}
+    					salida += saltos();
+    					break;
+    				case 4:
+    					salida += "Cancion, Año, Duracion, Disquera\n";
+    					Disqueras_Cancion cc3 = new Disqueras_Cancion();
+    					lrs = cc3.realizaBusquedaEspecial("joinTodo","","");
+    					for(ResultSet rs1: lrs){
+    						LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    						for(DisqsCansSalida ccs : ls){
+    							salida += ccs.toString() + "\n";
+    						}
+    					}
+    					salida += saltos();
+    					break;
 
+    			}
+    		}
+    		printTextField(salida);
+    		Manejador.cerrarConexion();
+    	}
     }
 
 
@@ -120,5 +168,26 @@ public class VistaController implements Initializable {
         }
         return false;
     }  
+
+    private String saltos(){
+    	return "\n\n\n\n\n\n";
+    }
     
+
+    private LinkedList<Integer> getCasos(String cancion,String artista, String colaboracion, String durMayor, String anioMayor, String disquera, String genero, String duracion, String durMenor, String anio, String anioMenor){
+    	LinkedList<Integer> l = new LinkedList<Integer>(); 
+    	if(cancion.equals("") && artista.equals("") && colaboracion.equals("") && durMayor.equals("") && anioMayor.equals("") && disquera.equals("")
+    		&& genero.equals("") && duracion.equals("") && durMenor.equals("") && anio.equals("") && anioMenor.equals("")){
+    		throw new ExcepcionBusquedaInvalida("No pasaste ningun parametro de busqueda.");
+    	}
+    	if(cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    		&& genero.equals("TODO") && duracion.equals("TODO") && anio.equals("TODO")){
+    		l.add(1);
+    		l.add(2);
+    		l.add(3);
+    		l.add(4);
+    		return l;
+    	}
+    	return null;
+    }
 }
