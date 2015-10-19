@@ -83,6 +83,22 @@ public class Disqueras_Cancion{
 		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodo() + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion + ";"; 
 	}
 
+	private String joinTodoAnio(String anio){
+		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodo() + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion +" and año = + " + anio +  ";"; 
+	}
+
+	private String joinTodoDuracion(String dur){
+		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodo() + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion +" and duracion = + " + dur +  ";"; 
+	}
+
+	private String joinTodoEntreDur(String dur1, String dur2){
+		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodo() + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion + " and duracion BETWEEN "  + dur1 + " AND "  + dur2 + ";"; 
+	}
+
+	private String joinTodoEntreAnio(String dur1, String dur2){
+		return "SELECT cancion,año,duracion,Recod_Label FROM Canciones,Disqueras JOIN(" + selectTodo() + ") ON Disqueras.id = " + idDisquera + " and Canciones.id = " + idCancion + " and año BETWEEN "  + dur1 + " AND "  + dur2 + ";"; 
+	}
+
 /**
 	* Realiza operaciones que modifican la tabla.
 	* @param operacion puede recibir cualquiera de estas frases: updateDisquera, updateCancion, deleteDisquera, deleteCancion, insert.
@@ -188,6 +204,26 @@ public class Disqueras_Cancion{
 						rs1 = stmt.executeQuery(comando);
 						lrs.add(rs1);
 					break;
+					case "joinTodoAnio":
+						comando = joinTodoAnio(param1);
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					break;
+					case "joinTodoDuracion":
+						comando = joinTodoDuracion(param1);
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					break;
+					case "joinTodoEntreDur":
+						comando = joinTodoEntreDur(param1,param2);
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					break;
+					case "joinTodoEntreAnio":
+						comando = joinTodoEntreAnio(param1,param2);
+						rs1 = stmt.executeQuery(comando);
+						lrs.add(rs1);
+					break;
 				case "joinCancionesADisquerasIDLike":
 					rs = can.realizaBusqueda("selectLikeID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
@@ -247,8 +283,8 @@ public class Disqueras_Cancion{
 				
 				throw new ErrorBaseDeDatos("No conozco esa operacion."); 
 			}
-		}catch(SQLException sqle){
-			
+		}catch(SQLException e){
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		

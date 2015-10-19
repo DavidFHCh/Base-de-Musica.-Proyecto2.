@@ -231,7 +231,7 @@ public class VistaController implements Initializable {
     					case 13:
     						salida += "Cancion, Año, Duracion, Artista\n";
     						Canciones_Artistas cc12 = new Canciones_Artistas();
-    						lrs = cc12.realizaBusquedaEspecial("joinCancionesAArtistasIDDuracion",duracionText,"");
+    						lrs = cc12.realizaBusquedaEspecial("joinTodoDuracion",duracionText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -243,7 +243,7 @@ public class VistaController implements Initializable {
     					case 14:
     						salida += "Cancion, Año, Duracion, Colaboracion\n";
     						Colaboraciones_Canciones cc13 = new Colaboraciones_Canciones();
-    						lrs = cc13.realizaBusquedaEspecial("joinCancionesAArtistasIDDuracion",duracionText,"");
+    						lrs = cc13.realizaBusquedaEspecial("joinTodoDuracion",duracionText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -255,7 +255,7 @@ public class VistaController implements Initializable {
     					case 15:
     						salida += "Cancion, Año, Duracion, Genero\n";
     						Generos_Cancion cc14 = new Generos_Cancion();
-    						lrs = cc14.realizaBusquedaEspecial("joinCancionesAGenerosIDDuracion",duracionText,"");
+    						lrs = cc14.realizaBusquedaEspecial("joinTodoDuracion",duracionText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
     							for(GensCansSalida ccs : ls){
@@ -267,7 +267,7 @@ public class VistaController implements Initializable {
     					case 16:
     						salida += "Cancion, Año, Duracion, Disquera\n";
     						Disqueras_Cancion cc15 = new Disqueras_Cancion();
-    						lrs = cc15.realizaBusquedaEspecial("joinCancionesADisquerasIDDuracion",duracionText,"");
+    						lrs = cc15.realizaBusquedaEspecial("joinTodoDuracion",duracionText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
     							for(DisqsCansSalida ccs : ls){
@@ -282,7 +282,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc16.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreDuraciones",durMenorText,durMayorText);
+    						lrs = cc16.realizaBusquedaEspecial("joinTodoEntreDur",durMenorText,durMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -297,7 +297,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc17.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreDuraciones",durMenorText,durMayorText);
+    						lrs = cc17.realizaBusquedaEspecial("joinTodoEntreDur",durMenorText,durMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -312,7 +312,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc18.realizaBusquedaEspecial("joinCancionesAGenerosIDEntreDuraciones",durMenorText,durMayorText);
+    						lrs = cc18.realizaBusquedaEspecial("joinTodoEntreDur",durMenorText,durMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
     							for(GensCansSalida ccs : ls){
@@ -327,7 +327,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc19.realizaBusquedaEspecial("joinCancionesADisquerasIDEntreDuraciones",durMenorText,durMayorText);
+    						lrs = cc19.realizaBusquedaEspecial("joinTodoEntreDur",durMenorText,durMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
     							for(DisqsCansSalida ccs : ls){
@@ -357,7 +357,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc201.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreAnios",anioMenorText,anioMayorText);
+    						lrs = cc201.realizaBusquedaEspecial("joinTodoEntreAnio",anioMenorText,anioMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -372,7 +372,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc21.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreAnios",anioMenorText,anioMayorText);
+    						lrs = cc21.realizaBusquedaEspecial("joinTodoEntreAnio",anioMenorText,anioMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -387,7 +387,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc22.realizaBusquedaEspecial("joinCancionesAGenerosIDEntreAnios",anioMenorText,anioMayorText);
+    						lrs = cc22.realizaBusquedaEspecial("joinTodoEntreAnio",anioMenorText,anioMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
     							for(GensCansSalida ccs : ls){
@@ -402,7 +402,7 @@ public class VistaController implements Initializable {
     						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
     							printTextField("checa que la duracion menor este a la izquierda.");
     						}
-    						lrs = cc23.realizaBusquedaEspecial("joinCancionesADisquerasIDEntreAnios",anioMenorText,anioMayorText);
+    						lrs = cc23.realizaBusquedaEspecial("joinTodoEntreAnio",anioMenorText,anioMayorText);
     						for(ResultSet rs1: lrs){
     							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
     							for(DisqsCansSalida ccs : ls){
@@ -414,9 +414,10 @@ public class VistaController implements Initializable {
     					case 26:
     						salida += "Cancion, Año, Duracion, Artista\n";
     						Canciones_Artistas cc24 = new Canciones_Artistas();
-    						lrs = cc24.realizaBusquedaEspecial("joinCancionesAArtistasIDAnio",anioText,"");
+    						lrs = cc24.realizaBusquedaEspecial("joinTodoAnio",anioText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							System.out.println(ls.size());
     							for(CollabsCansSalida ccs : ls){
     								salida += ccs.toString() + "\n";
     							}
@@ -426,7 +427,7 @@ public class VistaController implements Initializable {
     					case 27:
     						salida += "Cancion, Año, Duracion, Colaboracion\n";
     						Colaboraciones_Canciones cc25 = new Colaboraciones_Canciones();
-    						lrs = cc25.realizaBusquedaEspecial("joinCancionesAArtistasIDAnio",anioText,"");
+    						lrs = cc25.realizaBusquedaEspecial("joinTodoAnio",anioText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
     							for(CollabsCansSalida ccs : ls){
@@ -438,7 +439,7 @@ public class VistaController implements Initializable {
     					case 28:
     						salida += "Cancion, Año, Duracion, Genero\n";
     						Generos_Cancion cc26 = new Generos_Cancion();
-    						lrs = cc26.realizaBusquedaEspecial("joinCancionesAGenerosIDAnio",anioText,"");
+    						lrs = cc26.realizaBusquedaEspecial("joinTodoAnio",anioText,"");
     						for(ResultSet rs1: lrs){
     							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
     							for(GensCansSalida ccs : ls){
@@ -450,10 +451,13 @@ public class VistaController implements Initializable {
     					case 29:
     						salida += "Cancion, Año, Duracion, Disquera\n";
     						Disqueras_Cancion cc27 = new Disqueras_Cancion();
-    						lrs = cc27.realizaBusquedaEspecial("joinCancionesADisquerasIDAnio",anioText,"");
+    						lrs = cc27.realizaBusquedaEspecial("joinTodoAnio",anioText,"");
+    						//System.out.println(lrs.size());
     						for(ResultSet rs1: lrs){
     							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							//System.out.println(ls.size());
     							for(DisqsCansSalida ccs : ls){
+    								//System.out.println(salida);
     								salida += ccs.toString() + "\n";
     							}
     						}
@@ -514,6 +518,22 @@ public class VistaController implements Initializable {
     	if(cancion.equals("") && artista.equals("") && colaboracion.equals("") && durMayor.equals("") && anioMayor.equals("") && disquera.equals("")
     		&& genero.equals("") && duracion.equals("") && durMenor.equals("") && anio.equals("") && anioMenor.equals("")){
     		throw new ExcepcionBusquedaInvalida("No pasaste ningun parametro de busqueda.");
+    	}
+    	if((!cancion.equals("") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    		&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0")) && !durMenor.equals("-1") && !durMayor.equals("-1")){
+    		l.add(20);
+    		l.add(17);
+			l.add(18);
+			l.add(19);
+			return l;
+    	}
+    	if((!cancion.equals("") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    		&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0")) && !anioMenor.equals("-1") && !anioMayor.equals("-1")){
+			l.add(22);
+    		l.add(23);
+			l.add(24);
+			l.add(25);
+			return l;
     	}
     	if((cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
     		&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0"))){

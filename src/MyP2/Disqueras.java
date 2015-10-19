@@ -9,7 +9,7 @@ import org.sqlite.*;
 */
 public class Disqueras{
 
-	private static String tabla = "";
+	private static String tabla = "Disqueras";
 	private static String id = "id";
 	private static String disquera = "Recod_Label";
 	private String label;
@@ -60,7 +60,7 @@ public class Disqueras{
 	}
 
 	private String selectLikeID(String label){
-		return "SELECT * FROM " + tabla + " WHERE lower(" + disquera + ") LIKE '%" + label.toLowerCase() + "%';";
+		return "SELECT * FROM " + tabla + " WHERE " + disquera + " LIKE '%" + label + "%';";
 	} 
 
 	/**
@@ -138,8 +138,8 @@ public class Disqueras{
 					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
-		}catch(SQLException sqle){
-			
+		}catch(SQLException e){
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			throw new ErrorBaseDeDatos("Algo paso.");
 		}
 		

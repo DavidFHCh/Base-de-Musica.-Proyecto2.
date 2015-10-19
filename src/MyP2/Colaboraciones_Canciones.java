@@ -75,12 +75,28 @@ public class Colaboraciones_Canciones{
 		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodo() + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + ";"; 
 	}
 
+	private String joinTodoAnio(String anio){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodo() + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + " and año = + " + anio + ";"; 
+	}
+
+	private String joinTodoDuracion(String dur){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodo() + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + " and duracion = + " + dur + ";"; 
+	}
+
 	private String joinCancionesAArtistasID(String id){
 		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdCancion(id) + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + ";"; 
 	}
 
 	private String joinArtistasACancionesID(String id){
 		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodoIdColaboracion(id) + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + ";"; 
+	}
+
+	private String joinTodoEntreDur(String dur1, String dur2){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodo() + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + " and duracion BETWEEN "  + dur1 + " AND "  + dur2 + ";"; 
+	}
+
+	private String joinTodoEntreAnio(String dur1, String dur2){
+		return "SELECT cancion,año,duracion,artista FROM Canciones,Artistas JOIN(" + selectTodo() + ") ON Artistas.id = " + idColaboracion + " and Canciones.id = " + idCancion + " and año BETWEEN "  + dur1 + " AND "  + dur2 + ";"; 
 	}
 
 	/**
@@ -196,9 +212,30 @@ public class Colaboraciones_Canciones{
 						rs1 = stmt.executeQuery(comando);
 						l.add(rs1);
 					break;
+					case "joinTodoAnio":
+						comando = joinTodoAnio(param1);
+						rs1 = stmt.executeQuery(comando);
+						l.add(rs1);
+					break;
+					case "joinTodoDuracion":
+						comando = joinTodoDuracion(param1);
+						rs1 = stmt.executeQuery(comando);
+						l.add(rs1);
+					break;
+					case "joinTodoEntreDur":
+						comando = joinTodoEntreDur(param1,param2);
+						rs1 = stmt.executeQuery(comando);
+						l.add(rs1);
+					break;
+					case "joinTodoEntreAnio":
+						comando = joinTodoEntreAnio(param1,param2);
+						rs1 = stmt.executeQuery(comando);
+						l.add(rs1);
+					break;
 				case "joinCancionesAArtistasIDAnio":
 					rs = can.realizaBusqueda("selectAnioID",0,param1,""); //metodo de clase Canciones.java
 					while(rs.next()){
+						rs1 = null;
 						int iden = rs.getInt("id");
 						comando = joinCancionesAArtistasID(Integer.toString(iden));
 						rs1 = stmt.executeQuery(comando);
