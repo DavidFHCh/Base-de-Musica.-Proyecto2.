@@ -80,11 +80,11 @@ private static String tabla = "Canciones";
 	}
 
 	private String selectAnio(String year){
-		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE" + anio + " = " + year + ";";
+		return "SELECT " + cancion + "," + anio + "," + duracion + " FROM " + tabla + " WHERE " + anio + " = " + year + ";";
 	}
 
 	private String selectAnioID(String year){
-		return "SELECT * FROM " + tabla + " WHERE" + anio + " = " + year + ";";
+		return "SELECT * FROM " + tabla + " WHERE " + anio + " = " + year + ";";
 	}
 
 	private String selectEntreAnios(String anio1, String anio2){
@@ -191,6 +191,7 @@ private static String tabla = "Canciones";
 					break;
 				case "selectLikeID":
 					comando = selectLikeID(param1);
+					System.out.println(comando);
 					rs = stmt.executeQuery(comando);
 					break;
 				case "selectAnio":
@@ -228,8 +229,10 @@ private static String tabla = "Canciones";
 				default:					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
 			}
-		}catch(Exception sqle){	
+		}catch(Exception e){	
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			throw new ErrorBaseDeDatos("Algo paso.");
+
 		}
 		return rs;
 	}

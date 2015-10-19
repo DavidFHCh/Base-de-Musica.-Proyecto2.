@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Label;
 
 
 /**
@@ -51,10 +51,11 @@ public class VistaController implements Initializable {
     @FXML private TextField anio;
     @FXML private TextField cancion;
     @FXML private TextField anioMenor;
-    @FXML private ProgressBar barraProgreso;
     @FXML private TextArea results;
+    @FXML private Label buscando;
 
     @FXML private void handleBotonBuscar(ActionEvent event){
+    	buscando.setText("Buscando...");
     	LinkedList<PalabrasClave> palabras = new LinkedList<PalabrasClave>(); 
     	agregaPalabrasClave(palabras);
     	String cancionText = cancion.getCharacters().toString();
@@ -74,67 +75,401 @@ public class VistaController implements Initializable {
     		matcheador(durMenorText,palabras) || matcheador(anioText,palabras) || matcheador(anioMenorText,palabras)){
     		printTextField("No puedo realizar la accion solicitada.");
     	}else{
-    		LinkedList<Integer> casos = getCasos(cancionText,artistaText, colaboracionText, durMayorText, anioMayorText, disqueraText, generoText, duracionText, durMenorText, anioText, anioMenorText);
-    		ResultSet rs = null;
-    		LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
-    		String salida = "";
-    		for(int i : casos){
-    			switch(i){
-    				case 1:
-    					Colaboraciones_Canciones cc = new Colaboraciones_Canciones();
-    					salida += "Cancion, Año, Duracion, Colaboracion\n";
-    					lrs = cc.realizaBusquedaEspecial("joinTodo","","");
-    					for(ResultSet rs1: lrs){
-    						LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
-    						for(CollabsCansSalida ccs : ls){
-    							salida += ccs.toString() + "\n";
+    		if(anioMenorText.matches("[a-zA-Z]") || anioMayorText.matches("[a-zA-Z]") || anioText.matches("[a-zA-Z]") || duracionText.matches("[a-zA-Z]") || durMayorText.matches("[a-zA-Z]") || durMenorText.matches("[a-zA-Z]"))
+    			printTextField("Checa que no metas letras donde deben ir numeros!");
+    		else{
+	    		LinkedList<Integer> casos = getCasos(cancionText,artistaText, colaboracionText, durMayorText, anioMayorText, disqueraText, generoText, duracionText, durMenorText, anioText, anioMenorText);
+    			ResultSet rs = null;
+    			LinkedList<ResultSet> lrs = new LinkedList<ResultSet>();
+    			String salida = "";
+    			for(int i : casos){
+    				switch(i){
+    					case 1:
+   		 					Colaboraciones_Canciones cc = new Colaboraciones_Canciones();
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						lrs = cc.realizaBusquedaEspecial("joinTodo","","");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+   		 						}
     						}
-    					}
-    					salida += saltos();
-    					break;
-    				case 2:
-    					salida += "Cancion, Año, Duracion, Artista\n";
-    					Canciones_Artistas cc1 = new Canciones_Artistas();
-    					lrs = cc1.realizaBusquedaEspecial("joinTodo","","");
-    					for(ResultSet rs1: lrs){
-    						LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
-    						for(CollabsCansSalida ccs : ls){
-    							salida += ccs.toString() + "\n";
+    						salida += saltos();
+    						break;
+    					case 2:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+  		  					Canciones_Artistas cc1 = new Canciones_Artistas();
+    						lrs = cc1.realizaBusquedaEspecial("joinTodo","","");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+   		 					}
+    						salida += saltos();
+    						break;
+    					case 3:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc2 = new Generos_Cancion();
+ 		   					lrs = cc2.realizaBusquedaEspecial("joinTodo","","");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+   	 							}
     						}
-    					}
-    					salida += saltos();
-    					break;
-    				case 3:
-    					salida += "Cancion, Año, Duracion, Genero\n";
-    					Generos_Cancion cc2 = new Generos_Cancion();
-    					lrs = cc2.realizaBusquedaEspecial("joinTodo","","");
-    					for(ResultSet rs1: lrs){
-    						LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
-    						for(GensCansSalida ccs : ls){
-    							salida += ccs.toString() + "\n";
+    						salida += saltos();
+    						break;
+    					case 4:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+	    					Disqueras_Cancion cc3 = new Disqueras_Cancion();
+    						lrs = cc3.realizaBusquedaEspecial("joinTodo","","");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
     						}
-    					}
-    					salida += saltos();
-    					break;
-    				case 4:
-    					salida += "Cancion, Año, Duracion, Disquera\n";
-    					Disqueras_Cancion cc3 = new Disqueras_Cancion();
-    					lrs = cc3.realizaBusquedaEspecial("joinTodo","","");
-    					for(ResultSet rs1: lrs){
-    						LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
-    						for(DisqsCansSalida ccs : ls){
-    							salida += ccs.toString() + "\n";
+    						salida += saltos();
+    						break;
+    					case 5:
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						Colaboraciones_Canciones cc4 = new Colaboraciones_Canciones();
+    						lrs = cc4.realizaBusquedaEspecial("joinCancionesAColaboracionesIDLike",cancionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
     						}
-    					}
-    					salida += saltos();
-    					break;
+    						salida += saltos();
+    						break;
+    					case 6:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc5 = new Canciones_Artistas();
+    						lrs = cc5.realizaBusquedaEspecial("joinCancionesAArtistasIDLike",cancionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 7:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc6 = new Generos_Cancion();
+    						lrs = cc6.realizaBusquedaEspecial("joinCancionesAGenerosIDLike",cancionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 8:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+    						Disqueras_Cancion cc7 = new Disqueras_Cancion();
+    						lrs = cc7.realizaBusquedaEspecial("joinCancionesADisquerasIDLike",cancionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 9:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc8 = new Canciones_Artistas();
+    						lrs = cc8.realizaBusquedaEspecial("joinArtistasACancionesID",artistaText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 10:
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						Colaboraciones_Canciones cc9 = new Colaboraciones_Canciones();
+    						lrs = cc9.realizaBusquedaEspecial("joinArtistasACancionesID",colaboracionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 11:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+    						Disqueras_Cancion cc10 = new Disqueras_Cancion();
+    						lrs = cc10.realizaBusquedaEspecial("joinDisquerasACancionesID",disqueraText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 12:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc11 = new Generos_Cancion();
+    						lrs = cc11.realizaBusquedaEspecial("joinGenerosACancionesID",generoText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 13:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc12 = new Canciones_Artistas();
+    						lrs = cc12.realizaBusquedaEspecial("joinCancionesAArtistasIDDuracion",duracionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 14:
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						Colaboraciones_Canciones cc13 = new Colaboraciones_Canciones();
+    						lrs = cc13.realizaBusquedaEspecial("joinCancionesAArtistasIDDuracion",duracionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 15:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc14 = new Generos_Cancion();
+    						lrs = cc14.realizaBusquedaEspecial("joinCancionesAGenerosIDDuracion",duracionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 16:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+    						Disqueras_Cancion cc15 = new Disqueras_Cancion();
+    						lrs = cc15.realizaBusquedaEspecial("joinCancionesADisquerasIDDuracion",duracionText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 17:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc16 = new Canciones_Artistas();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc16.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreDuraciones",durMenorText,durMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 18:
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						Colaboraciones_Canciones cc17 = new Colaboraciones_Canciones();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc17.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreDuraciones",durMenorText,durMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 19:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc18 = new Generos_Cancion();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc18.realizaBusquedaEspecial("joinCancionesAGenerosIDEntreDuraciones",durMenorText,durMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 20:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+    						Disqueras_Cancion cc19 = new Disqueras_Cancion();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc19.realizaBusquedaEspecial("joinCancionesADisquerasIDEntreDuraciones",durMenorText,durMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 21:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc20 = new Canciones_Artistas();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc20.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreAnios",anioMenorText,anioMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 22:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc201 = new Canciones_Artistas();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc201.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreAnios",anioMenorText,anioMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 23:
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						Colaboraciones_Canciones cc21 = new Colaboraciones_Canciones();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc21.realizaBusquedaEspecial("joinCancionesAArtistasIDEntreAnios",anioMenorText,anioMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 24:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc22 = new Generos_Cancion();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc22.realizaBusquedaEspecial("joinCancionesAGenerosIDEntreAnios",anioMenorText,anioMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 25:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+    						Disqueras_Cancion cc23 = new Disqueras_Cancion();
+    						if(Double.valueOf(durMenorText) > Double.valueOf(durMayorText)){
+    							printTextField("checa que la duracion menor este a la izquierda.");
+    						}
+    						lrs = cc23.realizaBusquedaEspecial("joinCancionesADisquerasIDEntreAnios",anioMenorText,anioMayorText);
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 26:
+    						salida += "Cancion, Año, Duracion, Artista\n";
+    						Canciones_Artistas cc24 = new Canciones_Artistas();
+    						lrs = cc24.realizaBusquedaEspecial("joinCancionesAArtistasIDAnio",anioText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 27:
+    						salida += "Cancion, Año, Duracion, Colaboracion\n";
+    						Colaboraciones_Canciones cc25 = new Colaboraciones_Canciones();
+    						lrs = cc25.realizaBusquedaEspecial("joinCancionesAArtistasIDAnio",anioText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<CollabsCansSalida> ls = Manejador.obtenListaFinalColabsCans(rs1);
+    							for(CollabsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 28:
+    						salida += "Cancion, Año, Duracion, Genero\n";
+    						Generos_Cancion cc26 = new Generos_Cancion();
+    						lrs = cc26.realizaBusquedaEspecial("joinCancionesAGenerosIDAnio",anioText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<GensCansSalida> ls = Manejador.obtenListaFinalGensCans(rs1);
+    							for(GensCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					case 29:
+    						salida += "Cancion, Año, Duracion, Disquera\n";
+    						Disqueras_Cancion cc27 = new Disqueras_Cancion();
+    						lrs = cc27.realizaBusquedaEspecial("joinCancionesADisquerasIDAnio",anioText,"");
+    						for(ResultSet rs1: lrs){
+    							LinkedList<DisqsCansSalida> ls = Manejador.obtenListaFinalDisqsCans(rs1);
+    							for(DisqsCansSalida ccs : ls){
+    								salida += ccs.toString() + "\n";
+    							}
+    						}
+    						salida += saltos();
+    						break;
+    					default:
+    						printTextField("Busqueda no implementada, intenta con otra combinacion de parametros.");
 
+    				}
     			}
+    			printTextField(salida);
+    			Manejador.cerrarConexion();
+    			buscando.setText("");
     		}
-    		printTextField(salida);
-    		Manejador.cerrarConexion();
     	}
-    }
+	}
 
 
     /**
@@ -142,7 +477,7 @@ public class VistaController implements Initializable {
     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+    	results.setEditable(false);
     } 
 
     private void agrega(String regex, int ficha,LinkedList<PalabrasClave> palabras) {
@@ -180,14 +515,59 @@ public class VistaController implements Initializable {
     		&& genero.equals("") && duracion.equals("") && durMenor.equals("") && anio.equals("") && anioMenor.equals("")){
     		throw new ExcepcionBusquedaInvalida("No pasaste ningun parametro de busqueda.");
     	}
-    	if(cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
-    		&& genero.equals("TODO") && duracion.equals("TODO") && anio.equals("TODO")){
+    	if((cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    		&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0"))){
     		l.add(1);
     		l.add(2);
     		l.add(3);
     		l.add(4);
     		return l;
     	}
-    	return null;
+    	if((!cancion.equals("") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    		&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0"))){
+    		l.add(5);
+    		l.add(6);
+    		l.add(7);
+    		l.add(8);
+    		return l;
+    	}
+    	if((cancion.equals("TODO") && !artista.equals("") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    	&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0"))){
+    		l.add(9);
+    		return l;
+    	}
+    	if((cancion.equals("TODO") && artista.equals("TODO") && !colaboracion.equals("") && disquera.equals("TODO")
+    	&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0"))){
+    		l.add(10);
+    		return l;
+    	}
+		if((cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && !disquera.equals("")
+    	&& genero.equals("TODO") && duracion.equals("0") && anio.equals("0"))){
+    		l.add(11);
+    		return l;
+    	}
+    	if((cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    	&& !genero.equals("") && duracion.equals("0") && anio.equals("0"))){
+    		l.add(12);
+    		return l;
+    	}
+    	if((cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    	&& genero.equals("TODO") && !duracion.equals("") && anio.equals("0"))){
+    		l.add(13);
+    		l.add(14);
+			l.add(15);
+			l.add(16);
+    		return l;
+    	}
+    	if((cancion.equals("TODO") && artista.equals("TODO") && colaboracion.equals("TODO") && disquera.equals("TODO")
+    	&& genero.equals("TODO") && duracion.equals("0") && !anio.equals(""))){
+    		l.add(26);
+    		l.add(27);
+			l.add(28);
+			l.add(29);
+    		return l;
+    	}
+    	l.add(-1);
+    	return l;
     }
 }

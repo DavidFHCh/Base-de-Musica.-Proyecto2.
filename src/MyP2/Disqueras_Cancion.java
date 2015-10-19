@@ -235,7 +235,7 @@ public class Disqueras_Cancion{
 					break;
 				case "joinDisquerasACancionesID":
 					Disqueras disq = new Disqueras();
-				    rs = disq.realizaBusqueda("selectLikeID",0,param1); //metodo de clase Generos.java
+				    rs = disq.realizaBusqueda("selectLikeID",0,param1); //metodo de clase Disqueras.java
 					while(rs.next()){
 						int iden = rs.getInt("id");
 						comando = joinDisquerasACancionesID(Integer.toString(iden));

@@ -127,6 +127,14 @@ public class Artistas{
 					comando = selectLike(param1);
 					rs = stmt.executeQuery(comando);
 					break;
+				case "selectLikeID":
+					comando = selectLikeID(param1);
+					rs = stmt.executeQuery(comando);
+					break;
+				case "selectTodoID":
+					comando = selectTodoID();
+					rs = stmt.executeQuery(comando);
+					break;
 				default:
 					
 					throw new ErrorBaseDeDatos("No conozco esa operacion.");
