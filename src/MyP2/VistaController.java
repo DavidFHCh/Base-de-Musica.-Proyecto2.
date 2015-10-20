@@ -55,6 +55,7 @@ public class VistaController implements Initializable {
     @FXML private Label buscando;
 
     @FXML private void handleBotonBuscar(ActionEvent event){
+        try{
     	buscando.setText("Buscando...");
     	LinkedList<PalabrasClave> palabras = new LinkedList<PalabrasClave>(); 
     	agregaPalabrasClave(palabras);
@@ -473,6 +474,9 @@ public class VistaController implements Initializable {
     			buscando.setText("");
     		}
     	}
+    }catch(Exception e){
+        printTextField(e.getMessage());
+    }
 	}
 
 
