@@ -4,7 +4,7 @@ public class DisquerasSalida{
 
 		private String disquera;
 
-		public DisquerasSalida(String artista){
+		public DisquerasSalida(String disquera){
 			this.disquera = disquera;
 		}
 

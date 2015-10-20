@@ -4,7 +4,7 @@ public class GenerosSalida{
 
 		private String genero;
 
-		public GenerosSalida(String artista){
+		public GenerosSalida(String genero){
 			this.genero = genero;
 		}
 
